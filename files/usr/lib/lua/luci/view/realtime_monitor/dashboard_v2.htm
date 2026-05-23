@@ -1,0 +1,548 @@
+<%+header%>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+/* ==========================================================================
+   Realtime Monitor v2 UI
+   Theme-agnostic LuCI page layout
+   ========================================================================== */
+
+.rtm-page {
+  color-scheme: light dark;
+
+  --rtm-text-light: #111827;
+  --rtm-muted-light: #4b5563;
+  --rtm-border-light: rgba(15, 23, 42, 0.14);
+  --rtm-surface-light: rgba(255, 255, 255, 0.86);
+  --rtm-surface-strong-light: rgba(255, 255, 255, 0.96);
+  --rtm-page-bg-light: transparent;
+  --rtm-shadow-light: 0 10px 26px rgba(15, 23, 42, 0.12);
+
+  --rtm-text-dark: #e5eefb;
+  --rtm-muted-dark: #cbd5e1;
+  --rtm-border-dark: rgba(148, 163, 184, 0.24);
+  --rtm-surface-dark: rgba(15, 23, 42, 0.78);
+  --rtm-surface-strong-dark: rgba(15, 23, 42, 0.92);
+  --rtm-page-bg-dark: transparent;
+  --rtm-shadow-dark: 0 12px 30px rgba(0, 0, 0, 0.28);
+
+  --rtm-text: var(--rtm-text-light);
+  --rtm-muted: var(--rtm-muted-light);
+  --rtm-border: var(--rtm-border-light);
+  --rtm-surface: var(--rtm-surface-light);
+  --rtm-surface-strong: var(--rtm-surface-strong-light);
+  --rtm-page-bg: var(--rtm-page-bg-light);
+  --rtm-shadow: var(--rtm-shadow-light);
+
+  --rtm-accent: #38bdf8;
+  --rtm-rx: #4ea8ff;
+  --rtm-tx: #4cd08a;
+  --rtm-danger: #ef4444;
+  --rtm-warning: #f59e0b;
+  --rtm-success: #22c55e;
+
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.rtm-page[data-rtm-theme="dark"] {
+  color-scheme: dark;
+  --rtm-text: var(--rtm-text-dark);
+  --rtm-muted: var(--rtm-muted-dark);
+  --rtm-border: var(--rtm-border-dark);
+  --rtm-surface: var(--rtm-surface-dark);
+  --rtm-surface-strong: var(--rtm-surface-strong-dark);
+  --rtm-page-bg: var(--rtm-page-bg-dark);
+  --rtm-shadow: var(--rtm-shadow-dark);
+}
+
+.rtm-page[data-rtm-theme="light"] {
+  color-scheme: light;
+  --rtm-text: var(--rtm-text-light);
+  --rtm-muted: var(--rtm-muted-light);
+  --rtm-border: var(--rtm-border-light);
+  --rtm-surface: var(--rtm-surface-light);
+  --rtm-surface-strong: var(--rtm-surface-strong-light);
+  --rtm-page-bg: var(--rtm-page-bg-light);
+  --rtm-shadow: var(--rtm-shadow-light);
+}
+
+.rtm-page,
+.rtm-page * {
+  box-sizing: border-box;
+}
+
+.rtm-page {
+  width: min(100%, 1180px);
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 16px;
+  color: var(--rtm-text);
+  background: var(--rtm-page-bg);
+}
+
+.rtm-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.rtm-title {
+  margin: 0;
+  font-size: clamp(24px, 3vw, 34px);
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--rtm-text);
+}
+
+.rtm-title-accent {
+  color: var(--rtm-accent);
+}
+
+.rtm-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rtm-button,
+.rtm-select {
+  min-height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--rtm-border);
+  background: var(--rtm-surface);
+  color: var(--rtm-text);
+  padding: 6px 10px;
+  font: inherit;
+}
+
+.rtm-button {
+  cursor: pointer;
+}
+
+.rtm-meta {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--rtm-muted);
+  text-align: right;
+}
+
+.rtm-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 14px;
+  align-items: stretch;
+}
+
+.rtm-card {
+  grid-column: span 6;
+  min-width: 0;
+  min-height: 180px;
+  border: 1px solid var(--rtm-border);
+  border-radius: 14px;
+  background: var(--rtm-surface);
+  color: var(--rtm-text);
+  box-shadow: var(--rtm-shadow);
+  overflow: hidden;
+}
+
+.rtm-card--wide {
+  grid-column: span 12;
+}
+
+.rtm-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 10px 14px;
+  border-bottom: 1px solid color-mix(in srgb, var(--rtm-border) 70%, transparent);
+}
+
+.rtm-card__title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.rtm-card__body {
+  padding: 14px;
+}
+
+.rtm-kv {
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) auto;
+  gap: 8px 12px;
+  align-items: center;
+}
+
+.rtm-kv__label {
+  color: var(--rtm-muted);
+  font-size: 13px;
+}
+
+.rtm-kv__value {
+  color: var(--rtm-text);
+  font-weight: 700;
+  text-align: right;
+}
+
+.rtm-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--rtm-border);
+  border-radius: 999px;
+  padding: 3px 8px;
+  background: color-mix(in srgb, var(--rtm-surface-strong) 70%, transparent);
+  color: var(--rtm-text);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.rtm-chart-box {
+  min-height: 130px;
+  margin-top: 12px;
+  border: 1px solid color-mix(in srgb, var(--rtm-border) 55%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--rtm-surface-strong) 40%, transparent);
+}
+
+.rtm-rate-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.rtm-rate {
+  border: 1px solid var(--rtm-border);
+  border-radius: 10px;
+  padding: 8px;
+  text-align: center;
+  background: color-mix(in srgb, var(--rtm-surface-strong) 55%, transparent);
+}
+
+.rtm-rate__value {
+  display: block;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.rtm-rate__label {
+  display: block;
+  margin-top: 3px;
+  font-size: 11px;
+  color: var(--rtm-muted);
+}
+
+.rtm-rx {
+  color: var(--rtm-rx);
+}
+
+.rtm-tx {
+  color: var(--rtm-tx);
+}
+
+.rtm-alert {
+  border: 1px solid color-mix(in srgb, var(--rtm-danger) 45%, var(--rtm-border));
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: color-mix(in srgb, var(--rtm-danger) 12%, transparent);
+  color: var(--rtm-danger);
+  font-weight: 700;
+}
+
+.rtm-loading {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(2, 6, 23, 0.32);
+}
+
+.rtm-loading.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.rtm-loading__card {
+  width: 200px;
+  min-height: 130px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  border: 1px solid color-mix(in srgb, var(--rtm-accent) 35%, var(--rtm-border));
+  border-radius: 18px;
+  background: var(--rtm-surface-strong);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+  color: var(--rtm-text);
+}
+
+.rtm-spinner {
+  width: 44px;
+  height: 44px;
+  animation: rtm-spin 1.1s linear infinite;
+  filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.45));
+}
+
+.rtm-spinner__track {
+  stroke: rgba(148, 163, 184, 0.28);
+}
+
+.rtm-spinner__arc {
+  stroke: var(--rtm-accent);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+@keyframes rtm-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 900px) {
+  .rtm-page {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .rtm-topbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .rtm-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .rtm-card,
+  .rtm-card--wide {
+    grid-column: span 12;
+  }
+}
+</style>
+
+<script>
+(function () {
+  function parseColor(value) {
+    var match = String(value || "").match(/rgba?\(\s*(\d+),\s*(\d+),\s*(\d+)(?:,\s*([0-9.]+))?\s*\)/i);
+    if (!match) return null;
+    var alpha = match[4] === undefined ? 1 : parseFloat(match[4]);
+    if (alpha <= 0.05) return null;
+    return {
+      r: parseInt(match[1], 10),
+      g: parseInt(match[2], 10),
+      b: parseInt(match[3], 10),
+      a: alpha
+    };
+  }
+
+  function luminance(rgb) {
+    return (0.2126 * rgb.r + 0.7152 * rgb.g + 0.0722 * rgb.b) / 255;
+  }
+
+  function firstVisibleBackground(startNode) {
+    var node = startNode;
+    while (node && node.nodeType === 1) {
+      var bg = parseColor(window.getComputedStyle(node).backgroundColor);
+      if (bg) return bg;
+      node = node.parentElement;
+    }
+    return parseColor(window.getComputedStyle(document.body).backgroundColor) ||
+           parseColor(window.getComputedStyle(document.documentElement).backgroundColor);
+  }
+
+  function detectTheme(root) {
+    var bg = firstVisibleBackground(root.parentElement || root);
+    if (bg) return luminance(bg) < 0.5 ? "dark" : "light";
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+
+  function applyTheme() {
+    var roots = document.querySelectorAll(".rtm-page");
+    for (var i = 0; i < roots.length; i++) {
+      roots[i].setAttribute("data-rtm-theme", detectTheme(roots[i]));
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", applyTheme);
+  } else {
+    applyTheme();
+  }
+  window.addEventListener("load", applyTheme);
+})();
+</script>
+
+<section id="rtm-dashboard" class="rtm-page rtm-dashboard" aria-label="Realtime Monitor Dashboard">
+  <div id="dashboard_loading_overlay" class="rtm-loading" aria-live="polite" aria-label="Loading data">
+    <div class="rtm-loading__card">
+      <svg class="rtm-spinner" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+        <circle class="rtm-spinner__track" cx="22" cy="22" r="18" fill="none" stroke-width="3"/>
+        <circle class="rtm-spinner__arc" cx="22" cy="22" r="18" fill="none" stroke-width="3"
+          stroke-dasharray="90 200" stroke-dashoffset="0"/>
+      </svg>
+      <span>Loading</span>
+    </div>
+  </div>
+
+  <header class="rtm-topbar">
+    <h1 class="rtm-title">Dash<span class="rtm-title-accent">board</span></h1>
+    <div>
+      <div class="rtm-actions">
+        <button id="force_refresh_btn" class="rtm-button" title="Force refresh" aria-label="Force refresh">
+          <i class="fas fa-redo" aria-hidden="true"></i>
+        </button>
+        <span class="rtm-badge"><i class="fas fa-calendar-day"></i><span id="tile_date">-- --</span></span>
+        <span class="rtm-badge"><span id="current_time">--:--:--</span><span id="tile_ampm">--</span></span>
+      </div>
+    </div>
+  </header>
+
+  <main class="rtm-grid">
+    <section class="rtm-card rtm-card--network" aria-label="Network">
+      <div class="rtm-card__header">
+        <h2 class="rtm-card__title"><i class="fas fa-globe"></i> Network</h2>
+      </div>
+      <div class="rtm-card__body">
+        <div class="rtm-kv">
+          <div class="rtm-kv__label">Internet Status</div>
+          <div class="rtm-kv__value"><span id="net_status" class="rtm-badge">N/A</span></div>
+
+          <div class="rtm-kv__label">Public IPv4</div>
+          <div class="rtm-kv__value"><span id="net_public_ip">N/A</span></div>
+
+          <div class="rtm-kv__label">Public IPv6</div>
+          <div class="rtm-kv__value"><span id="net_public_ipv6">N/A</span></div>
+
+          <div class="rtm-kv__label">ISP</div>
+          <div class="rtm-kv__value"><span id="net_isp">N/A</span></div>
+
+          <div class="rtm-kv__label" id="net_wan_uptime_label">WAN Uptime</div>
+          <div class="rtm-kv__value"><span id="net_wan_uptime">N/A</span></div>
+        </div>
+
+        <div id="wan_down_msg"></div>
+
+        <div class="rtm-rate-row">
+          <div class="rtm-rate">
+            <span id="wan_rx_value" class="rtm-rate__value rtm-rx">0 B/s</span>
+            <span class="rtm-rate__label"><i class="fas fa-arrow-down"></i> Down-Rate</span>
+          </div>
+          <div class="rtm-rate">
+            <span id="wan_tx_value" class="rtm-rate__value rtm-tx">0 B/s</span>
+            <span class="rtm-rate__label"><i class="fas fa-arrow-up"></i> Up-Rate</span>
+          </div>
+        </div>
+
+        <div class="rtm-chart-box">
+          <canvas id="netChart" height="140"></canvas>
+        </div>
+
+        <div class="rtm-kv" style="margin-top: 8px;">
+          <div class="rtm-kv__label">Rx Avg / Max</div>
+          <div class="rtm-kv__value"><span id="wan_rx_avg">--</span> / <span id="wan_rx_max">--</span></div>
+          <div class="rtm-kv__label">Tx Avg / Max</div>
+          <div class="rtm-kv__value"><span id="wan_tx_avg">--</span> / <span id="wan_tx_max">--</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rtm-card rtm-card--system" aria-label="CPU and Memory">
+      <div class="rtm-card__header">
+        <h2 class="rtm-card__title"><i class="fas fa-chart-area"></i> CPU / Memory</h2>
+      </div>
+      <div class="rtm-card__body">
+        <div class="rtm-kv">
+          <div class="rtm-kv__label">System Uptime</div>
+          <div class="rtm-kv__value"><span id="system_uptime_control">N/A</span></div>
+
+          <div class="rtm-kv__label">Adblock</div>
+          <div class="rtm-kv__value"><span id="adblock_status">N/A</span></div>
+
+          <div class="rtm-kv__label">CPU Load</div>
+          <div class="rtm-kv__value"><span id="cpuLoadText">--%</span></div>
+
+          <div class="rtm-kv__label">CPU Avg / Max</div>
+          <div class="rtm-kv__value"><span id="cpuAvgText">--.-%</span> / <span id="cpuMaxText">--.-%</span></div>
+        </div>
+
+        <div class="rtm-chart-box">
+          <canvas id="cpuChart" height="140"></canvas>
+        </div>
+
+        <div class="rtm-kv" style="margin-top: 10px;">
+          <div class="rtm-kv__label">Memory</div>
+          <div class="rtm-kv__value"><span id="mem_arc_pct">--%</span></div>
+          <div class="rtm-kv__label">Used / Free</div>
+          <div class="rtm-kv__value"><span id="custom_mem">N/A</span> / <span id="mem_free_text">N/A</span></div>
+        </div>
+
+        <div class="rtm-chart-box">
+          <canvas id="memSparkline" height="80"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <section class="rtm-card rtm-card--clients" aria-label="Clients">
+      <div class="rtm-card__header">
+        <h2 class="rtm-card__title"><i class="fas fa-users"></i> Clients</h2>
+      </div>
+      <div class="rtm-card__body">
+        <div class="rtm-kv">
+          <div class="rtm-kv__label">Wireless</div>
+          <div class="rtm-kv__value"><span id="wifi_clients_count">0</span></div>
+
+          <div class="rtm-kv__label">LAN</div>
+          <div class="rtm-kv__value"><span id="lan_clients_count">0</span></div>
+
+          <div class="rtm-kv__label">Wireless Controller Temperature</div>
+          <div class="rtm-kv__value"><span id="wifi_temp">-- °C</span></div>
+        </div>
+
+        <div id="clients_summary"></div>
+      </div>
+    </section>
+
+    <section class="rtm-card rtm-card--usage" aria-label="Usage">
+      <div class="rtm-card__header">
+        <h2 class="rtm-card__title"><i class="fas fa-chart-line"></i> Usage</h2>
+      </div>
+      <div class="rtm-card__body">
+        <div id="vnstat_warn"></div>
+
+        <div class="rtm-kv">
+          <div class="rtm-kv__label">Today</div>
+          <div class="rtm-kv__value"><span id="vn_daily_total">N/A</span></div>
+
+          <div class="rtm-kv__label">Monthly</div>
+          <div class="rtm-kv__value"><span id="vn_monthly_total">N/A</span></div>
+
+          <div class="rtm-kv__label">Today Download / Upload</div>
+          <div class="rtm-kv__value"><span id="vn_daily_rx">N/A</span> / <span id="vn_daily_tx">N/A</span></div>
+
+          <div class="rtm-kv__label">Monthly Download / Upload</div>
+          <div class="rtm-kv__value"><span id="vn_monthly_rx">N/A</span> / <span id="vn_monthly_tx">N/A</span></div>
+        </div>
+
+        <div style="margin-top: 12px;">
+          <a href="/cgi-bin/luci/admin/status/realtime/bandwidth" class="rtm-button">
+            <i class="fas fa-chart-bar"></i> View Detailed Usage Graphs
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+</section>
+
+<%+footer%>
