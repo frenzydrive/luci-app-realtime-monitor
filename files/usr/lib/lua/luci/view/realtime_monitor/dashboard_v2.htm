@@ -437,6 +437,41 @@
   text-decoration: none;
 }
 
+
+/* === Realtime Monitor v2 two-column dashboard layout START === */
+.rtm-dashboard-layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  align-items: start;
+}
+
+.rtm-column {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+  min-width: 0;
+}
+
+.rtm-dashboard-layout .rtm-card {
+  grid-column: auto;
+  min-height: 0;
+}
+
+.rtm-dashboard-layout .rtm-card--network,
+.rtm-dashboard-layout .rtm-card--system,
+.rtm-dashboard-layout .rtm-card--clients,
+.rtm-dashboard-layout .rtm-card--usage {
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .rtm-dashboard-layout {
+    grid-template-columns: 1fr;
+  }
+}
+/* === Realtime Monitor v2 two-column dashboard layout END === */
+
 </style>
 
 <script>
@@ -518,7 +553,8 @@
 
   <div id="error_banner" class="rtm-alert" hidden></div>
 
-  <main class="rtm-grid">
+  <main class="rtm-dashboard-layout">
+    <div class="rtm-column rtm-column--left">
     <section class="rtm-card rtm-card--network" aria-label="Network">
       <div class="rtm-card__header">
         <h2 class="rtm-card__title"><i class="fas fa-globe"></i> Network</h2>
@@ -569,7 +605,7 @@
           </div>
         </div>
 
-        <div class="rtm-chart-box">
+        <div class="rtm-chart-box wan_merged_chart">
           <canvas id="netChart" height="140"></canvas>
         </div>
 
@@ -581,60 +617,6 @@
         </div>
       </div>
     </section>
-
-    <section class="rtm-card rtm-card--system" aria-label="CPU and Memory">
-      <div class="rtm-card__header">
-        <h2 class="rtm-card__title"><i class="fas fa-chart-area"></i> CPU / Memory</h2>
-      </div>
-      <div class="rtm-card__body">
-        <div class="rtm-kv">
-          <div class="rtm-kv__label">System Uptime</div>
-          <div class="rtm-kv__value"><span id="system_uptime_control">N/A</span></div>
-
-          <div class="rtm-kv__label">Adblock</div>
-          <div class="rtm-kv__value"><a id="adb_widget_link" href="/cgi-bin/luci/admin/services/adblock" class="rtm-link">
-              <span id="adb_status_val">N/A</span>
-              <span id="adb_domains_val" class="rtm-muted"></span>
-            </a></div>
-
-          <div class="rtm-kv__label">CPU Load</div>
-          <div class="rtm-kv__value"><span id="cpuPercentText">--%</span></div>
-
-          <div class="rtm-kv__label">CPU Avg / Max</div>
-          <div class="rtm-kv__value"><span id="cpuAvgText">--.-%</span> / <span id="cpuMaxText">--.-%</span></div>
-        </div>
-
-        <div class="rtm-meter" aria-label="CPU usage">
-          <div id="cpuBarFill" class="rtm-meter__fill"></div>
-        </div>
-
-        <div class="rtm-kv" style="margin-top: 10px;">
-          <div class="rtm-kv__label">CPU Temperature</div>
-          <div class="rtm-kv__value"><span id="cpuTempBadge" class="rtm-badge">-- °C</span></div>
-        </div>
-
-        <div class="rtm-chart-box">
-          <canvas id="cpuCoreChart" height="80"></canvas>
-        </div>
-
-        <div class="rtm-chart-box">
-          <canvas id="cpuLineChart" height="140"></canvas>
-        </div>
-
-        <div class="rtm-kv" style="margin-top: 10px;">
-          <div class="rtm-kv__label">Memory</div>
-          <div class="rtm-kv__value"><span id="mem_arc_pct">--%</span><span id="mem_arc_fill" hidden></span></div>
-          <div class="rtm-kv__label">Used / Free</div>
-          <div class="rtm-kv__value"><span id="custom_mem">N/A</span> / <span id="mem_free_text">N/A</span><span id="mem_bar" hidden></span></div>
-        </div>
-
-        <div class="rtm-chart-box">
-          <canvas id="mem_sparkline" height="80"></canvas>
-          <div id="mem_spark_tooltip" class="rtm-tooltip" hidden></div>
-        </div>
-      </div>
-    </section>
-
     <section class="rtm-card rtm-card--clients" aria-label="Clients">
       <div class="rtm-card__header">
         <h2 class="rtm-card__title"><i class="fas fa-users"></i> Clients</h2>
@@ -669,7 +651,57 @@
         <div id="custom_lan_port_dots" class="rtm-port-dots"></div>
       </div>
     </section>
+    </div>
 
+    <div class="rtm-column rtm-column--right">
+    <section class="rtm-card rtm-card--system" aria-label="CPU and Memory">
+      <div class="rtm-card__header">
+        <h2 class="rtm-card__title"><i class="fas fa-chart-area"></i> CPU / Memory</h2>
+      </div>
+      <div class="rtm-card__body">
+        <div class="rtm-kv">
+          <div class="rtm-kv__label">System Uptime</div>
+          <div class="rtm-kv__value"><span id="system_uptime_control">N/A</span></div>
+
+          <div class="rtm-kv__label">Adblock</div>
+          <div class="rtm-kv__value"><a id="adb_widget_link" href="/cgi-bin/luci/admin/services/adblock" class="rtm-link">
+              <span id="adb_status_val">N/A</span>
+              <span id="adb_domains_val" class="rtm-muted"></span>
+            </a></div>
+
+          <div class="rtm-kv__label">CPU Load</div>
+          <div class="rtm-kv__value"><span id="cpuPercentText">--%</span></div>
+
+          <div class="rtm-kv__label">CPU Avg / Max</div>
+          <div class="rtm-kv__value"><span id="cpuAvgText">--.-%</span> / <span id="cpuMaxText">--.-%</span></div>
+        </div>
+
+        <div class="rtm-meter" aria-label="CPU usage">
+          <div id="cpuBarFill" class="rtm-meter__fill"></div>
+        </div>
+
+        <div class="rtm-kv" style="margin-top: 10px;">
+          <div class="rtm-kv__label">CPU Temperature</div>
+          <div class="rtm-kv__value"><span id="cpuTempBadge" class="rtm-badge">-- °C</span></div>
+        </div>
+
+        <div class="rtm-chart-box cpu_merged_chart">
+          <canvas id="cpuLineChart" height="140"></canvas>
+        </div>
+
+        <div class="rtm-kv" style="margin-top: 10px;">
+          <div class="rtm-kv__label">Memory</div>
+          <div class="rtm-kv__value"><span id="mem_arc_pct">--%</span><span id="mem_arc_fill" hidden></span></div>
+          <div class="rtm-kv__label">Used / Free</div>
+          <div class="rtm-kv__value"><span id="custom_mem">N/A</span> / <span id="mem_free_text">N/A</span><span id="mem_bar" hidden></span></div>
+        </div>
+
+        <div class="rtm-chart-box mem_spark_outer">
+          <canvas id="mem_sparkline" height="80"></canvas>
+          <div id="mem_spark_tooltip" class="rtm-tooltip" hidden></div>
+        </div>
+      </div>
+    </section>
     <section class="rtm-card rtm-card--usage" aria-label="Usage">
       <div class="rtm-card__header">
         <h2 class="rtm-card__title"><i class="fas fa-chart-line"></i> Usage</h2>
@@ -708,7 +740,1542 @@
         </div>
       </div>
     </section>
+    </div>
   </main>
 </section>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   Dashboard — all scripts consolidated
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Clock ── */
+(function () {
+  const elTime   = document.getElementById("current_time");
+  const elAmpm   = document.getElementById("tile_ampm");
+  const elDate   = document.getElementById("tile_date");
+  const days     = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  const months   = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  function updateClock() {
+    const now = new Date();
+    let h = now.getHours();
+    const ap = h >= 12 ? "PM" : "AM";
+    h = h % 12 || 12;
+    const hh = String(h).padStart(2,"0");
+    const mm = String(now.getMinutes()).padStart(2,"0");
+    const ss = String(now.getSeconds()).padStart(2,"0");
+    if (elTime) elTime.textContent = hh + ":" + mm + ":" + ss;
+    if (elAmpm) elAmpm.textContent = ap;
+    if (elDate) elDate.textContent = days[now.getDay()] + ", " + months[now.getMonth()] + " " + now.getDate();
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+})();
+
+/* ── Force refresh ── */
+(function () {
+  const btn = document.getElementById("force_refresh_btn");
+  if (!btn) return;
+  btn.addEventListener("click", async () => {
+    btn.disabled = true;
+    try {
+      await fetch("/cgi-bin/luci/admin/status/dashboard/force");
+      window.CustomRealtime.lastUpdate.adblock = 0;
+      await window.CustomRealtime.update(true);
+    } catch (e) {
+      console.warn("Force refresh failed:", e);
+    }
+    setTimeout(() => { btn.disabled = false; }, 2000);
+  });
+})();
+
+/* ══════════════════════════════════════════════════════════════
+   localStorage cache key + helpers
+   ══════════════════════════════════════════════════════════════ */
+const CACHE_KEY = "__dashboard_cache_v1";
+
+function savePageCache(data) {
+  try {
+    const snapshot = {
+      ts: Date.now(),
+      system_uptime_seconds: data.system_uptime_seconds,
+      cpu_temp:  data.cpu_temp,
+      wifi_temp: data.wifi_temp,
+      network:   data.network,
+      mem:       data.mem,
+      wifi:      { total: data.wifi && data.wifi.total, aps: data.wifi && data.wifi.aps },
+      lan:       data.lan,
+      adblock:   data.adblock,
+      vnstat:    data.vnstat,
+    };
+    localStorage.setItem(CACHE_KEY, JSON.stringify(snapshot));
+  } catch (_) {}
+}
+
+// Cache is considered fresh if it was written within this window.
+// Matches the slowest fast-changing metric (clients/RAM = 20 s).
+// Anything older is treated as absent — show the loading overlay instead.
+const MAX_CACHE_AGE_MS = 20000;
+
+function loadPageCache() {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!parsed || !parsed.ts) return null;
+    if ((Date.now() - parsed.ts) > MAX_CACHE_AGE_MS) return null;
+    return parsed;
+  } catch (_) { return null; }
+}
+
+const STALE_IDS = [
+  "net_public_ip","net_public_ipv6","net_isp","net_wan_uptime",
+  "system_uptime_control","cpuPercentText","cpuTempBadge",
+  "custom_mem","mem_free_text","mem_arc_pct",
+  "custom_wifi_total","custom_wifi_temp",
+  "custom_lan_total",
+  "vn_daily_total","vn_monthly_total",
+  "vn_daily_rx","vn_daily_tx","vn_monthly_rx","vn_monthly_tx",
+  "adb_status_val","adb_domains_val",
+  "wan_rx_value","wan_tx_value"
+];
+function markStale() {
+  STALE_IDS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.add("stale-value");
+  });
+}
+function markFresh() {
+  const overlay = document.getElementById("dashboard_loading_overlay");
+  if (overlay) {
+    overlay.classList.add("dlo_hidden");
+    // Remove from DOM after fade so it can't intercept any future events
+    const onDone = () => { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); };
+    overlay.addEventListener("transitionend", onDone, { once: true });
+    // Fallback in case transitionend never fires (e.g. reduced-motion)
+    setTimeout(onDone, 500);
+  }
+  STALE_IDS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.classList.remove("stale-value");
+      el.classList.add("freshened");
+      setTimeout(() => el.classList.remove("freshened"), 600);
+    }
+  });
+}
+
+/* ── Realtime data object ── */
+window.CustomRealtime = {
+  config: {
+    fetchInterval:         2000,
+    minDeltaGap:           350,
+    wifiTempInterval:      5000,
+    wifiCountsInterval:    20000,
+    clientsUpdateInterval: 20000,
+    vnstatUpdateInterval:  300000,
+    adblockUpdateInterval: 300000,
+    memInterval:           20000,
+    wifiTempMax:           90
+  },
+
+  etag:             null,
+  lastCpu:          null,
+  prevRX:           null,
+  prevTX:           null,
+  prevTime:         null,
+  _updating:        false,
+  _bypassMinDelta:  false,
+  _firstFetchDone:  false,
+
+  lastUpdate: { wifiTemp: 0, wifiCounts: 0, clients: 0, vnstat: 0, mem: 0, adblock: 0 },
+  memSparkHistory: [],
+  elements: {},
+
+  cpuHistory:       [],
+  rxHistory:        [],
+  txHistory:        [],
+  coreHistories:    [],
+  lastCoreCounters: {},
+
+  wanUnit: "MBs",
+  vnstatIface:          null,
+  lastVnstatData:       null,
+  _lastVnstatIfaceList: null,
+
+  applyCachedData(cached) {
+    if (!cached) return;
+    const el = this.elements;
+
+    if (el.system_uptime_control && cached.system_uptime_seconds != null)
+      el.system_uptime_control.textContent = this.formatUptimeFlex(Number(cached.system_uptime_seconds));
+
+    if (cached.network) this.applyNetworkFields(cached.network, true);
+
+    if (el.cpuTempBadge && cached.cpu_temp != null) {
+      const t = Number(cached.cpu_temp) || 0;
+      el.cpuTempBadge.textContent = Math.round(t) + " °C";
+      el.cpuTempBadge.className   = "temp_badge " + (t > 75 ? "temp_badge_hot" : t > 60 ? "temp_badge_warm" : "temp_badge_ok");
+    }
+
+    if (cached.mem) {
+      const total  = Number(cached.mem.total) || 0;
+      const avail  = Number(cached.mem.avail) || 0;
+      const memPct = total > 0 ? (total - avail) / total * 100 : 0;
+      const arcColor = memPct < 70 ? "#26c6da" : memPct < 87 ? "#b07d10" : "#b33329";
+      if (el.mem_arc_fill) {
+        el.mem_arc_fill.style.strokeDashoffset = (113 * (1 - memPct / 100)).toFixed(2);
+        el.mem_arc_fill.style.stroke = arcColor;
+      }
+      if (el.mem_arc_pct) el.mem_arc_pct.textContent = memPct.toFixed(1) + "%";
+      const fmt = mb => mb > 1024 ? (mb / 1024).toFixed(2) + " GB" : mb.toFixed(1) + " MB";
+      if (el.custom_mem)    el.custom_mem.textContent    = fmt((total - avail) / 1024);
+      if (el.mem_free_text) el.mem_free_text.textContent = fmt(avail / 1024);
+      if (this.memSparkHistory.length === 0) {
+        for (let i = 0; i < 20; i++) this.memSparkHistory.push(memPct);
+        this.drawSparkline();
+      }
+    }
+
+    if (cached.wifi && el.custom_wifi_total)
+      el.custom_wifi_total.textContent = cached.wifi.total || 0;
+
+    if (cached.wifi_temp != null && el.custom_wifi_temp)
+      el.custom_wifi_temp.textContent = Math.round(Number(cached.wifi_temp) || 0) + " °C";
+
+    if (cached.lan && el.custom_lan_total)
+      el.custom_lan_total.textContent = cached.lan.total || 0;
+
+    if (cached.adblock) {
+      const adb      = cached.adblock;
+      const iconWrap = document.querySelector(".adb_icon_wrap");
+      const adbNotInstalled = adb.installed === false
+        || (adb.installed == null && !adb.status);
+      if (adbNotInstalled) {
+        if (el.adb_status_val) {
+          el.adb_status_val.style.display = "";
+          el.adb_status_val.textContent   = "Not Installed";
+          el.adb_status_val.style.color   = "rgba(220,80,80,0.65)";
+        }
+        if (el.adb_domains_val) { el.adb_domains_val.textContent = ""; }
+        if (iconWrap) iconWrap.classList.remove("adb_enabled");
+        if (el.adb_widget_link) {
+          el.adb_widget_link.href  = "/cgi-bin/luci/admin/system/package-manager";
+          el.adb_widget_link.title = "Click to Install Adblock Package";
+        }
+      } else {
+        const status  = (adb.status || "").toLowerCase();
+        const enabled = (status === "enabled");
+        const stopped = (status === "stopped" || status === "");
+        if (el.adb_status_val) {
+          el.adb_status_val.style.display = "";
+          el.adb_status_val.textContent   = enabled ? "Enabled" : (stopped ? "Stopped" : "Disabled");
+          el.adb_status_val.style.color   = enabled ? "#66bb6a" : (stopped ? "rgba(255,255,255,0.35)" : "#ef5350");
+        }
+        if (iconWrap) iconWrap.classList.toggle("adb_enabled", enabled);
+        if (el.adb_domains_val) {
+          const n = parseInt(String(adb.blocked_domains || "0").replace(/[^0-9]/g, ""), 10) || 0;
+          const label = n >= 1000 ? (n / 1000).toFixed(0) + "K" : String(n);
+          el.adb_domains_val.textContent = enabled ? (n >= 1000 ? (n / 1000).toFixed(0) + "K" : String(n)) + " domains blocked" : "";
+        }
+        if (el.adb_widget_link) {
+          el.adb_widget_link.href  = "/cgi-bin/luci/admin/services/adblock";
+          el.adb_widget_link.title = "Open Adblock settings";
+        }
+      }
+    }
+
+    if (cached.vnstat) {
+      this.lastVnstatData = cached.vnstat;
+      this.renderVnstatData(cached.vnstat);
+    }
+  },
+
+  computeCoreUsage(currCores) {
+    const ordered = Object.keys(currCores)
+      .sort((a, b) => Number(a.replace(/^\D+/, "")) - Number(b.replace(/^\D+/, "")))
+      .map(k => ({ name: k, curr: currCores[k], prev: this.lastCoreCounters[k] }));
+
+    const hasprev = ordered.some(({ prev }) => !!prev);
+    this.lastCoreCounters = {};
+    ordered.forEach(({ name, curr }) => { this.lastCoreCounters[name] = curr; });
+    if (!hasprev) return null;
+
+    return ordered.map(({ curr, prev }) => {
+      if (!prev) return 0;
+      const pT = prev.usr + prev.nice + prev.sys + prev.idle + prev.iowait + prev.irq + prev.softirq + prev.steal;
+      const cT = curr.usr + curr.nice + curr.sys + curr.idle + curr.iowait + curr.irq + curr.softirq + curr.steal;
+      const dT = cT - pT, dI = curr.idle - prev.idle;
+      return dT > 0 ? ((dT - dI) / dT) * 100 : 0;
+    });
+  },
+
+  renderVnstatData(vnstat) {
+    const warnEl    = document.getElementById("vnstat_warning");
+    const contentEl = document.getElementById("vnstat_content");
+    const el        = this.elements;
+    if (!vnstat) return;
+
+    const installed = vnstat.installed !== false;
+    if (!installed) {
+      if (warnEl) {
+        warnEl.className = "vnstat_warn warn--missing";
+        warnEl.innerHTML = "<i class=\"fas fa-circle-xmark\"></i><span>vnStat is not installed. Bandwidth usage data is unavailable.</span>";
+        warnEl.style.display = "flex";
+      }
+      if (contentEl) contentEl.style.display = "none";
+      return;
+    }
+
+    const ifaces    = Array.isArray(vnstat.ifaces) ? vnstat.ifaces : [];
+    const ifaceNames = ifaces.map(f => (typeof f === "object" ? f.name : f));
+    const sel        = (this.vnstatIface && ifaceNames.includes(this.vnstatIface))
+                       ? this.vnstatIface : (ifaceNames[0] || null);
+    const ifaceData = (vnstat.data && sel) ? (vnstat.data[sel] || {}) : {};
+    const d = ifaceData.daily   || {};
+    const m = ifaceData.monthly || {};
+
+    const isEmpty  = v => !v || v === "N/A" || v === "0" || v === "0 B" || v === "0.00 B";
+    const allEmpty = [d.rx, d.tx, d.total, m.rx, m.tx, m.total].every(isEmpty);
+
+    if (allEmpty) {
+      if (warnEl) {
+        warnEl.className = "vnstat_warn warn--broken";
+        warnEl.innerHTML = "<i class=\"fas fa-triangle-exclamation\"></i><span>vnStat may not be working properly. <a href=\"/cgi-bin/luci/admin/status/vnstat2/config\">Check vnStat settings</a></span>";
+        warnEl.style.display = "flex";
+      }
+      if (contentEl) contentEl.style.display = "none";
+      return;
+    }
+
+    if (warnEl)    { warnEl.style.display = "none"; warnEl.className = "vnstat_warn"; }
+    if (contentEl) contentEl.style.display = "";
+
+    if (el.vn_daily_rx)      el.vn_daily_rx.textContent      = d.rx    || "N/A";
+    if (el.vn_daily_tx)      el.vn_daily_tx.textContent      = d.tx    || "N/A";
+    if (el.vn_daily_total)   el.vn_daily_total.textContent   = d.total || "N/A";
+    if (el.vn_monthly_rx)    el.vn_monthly_rx.textContent    = m.rx    || "N/A";
+    if (el.vn_monthly_tx)    el.vn_monthly_tx.textContent    = m.tx    || "N/A";
+    if (el.vn_monthly_total) el.vn_monthly_total.textContent = m.total || "N/A";
+    const today = new Date();
+    if (el.vn_daily_header)   el.vn_daily_header.textContent   = `Today - ${today.toLocaleString([], { month: "short" })} ${today.getDate()}`;
+    if (el.vn_monthly_header) el.vn_monthly_header.textContent = today.toLocaleString([], { month: "long" });
+  },
+
+  cacheElements() {
+    [
+      "net_status", "net_public_ip", "net_public_ipv6", "ipv6_block",
+      "net_isp", "net_wan_uptime", "net_wan_uptime_label",
+      "custom_mem", "mem_bar", "mem_arc_fill", "mem_arc_pct",
+      "custom_wifi_total", "custom_wifi_temp", "wifi_temp_dot", "wifi_temp_foot",
+      "custom_lan_total", "custom_lan_ports", "custom_lan_port_dots", "custom_lan_port_strip",
+      "vn_daily_rx", "vn_daily_tx", "vn_daily_total",
+      "vn_monthly_rx", "vn_monthly_tx", "vn_monthly_total",
+      "vn_daily_header", "vn_monthly_header",
+      "cpuPercentText", "cpuBarFill", "cpuTempBadge", "cpuAvgText", "cpuMaxText",
+      "wan_rx_value", "wan_tx_value", "wan_rx_avg", "wan_rx_max", "wan_tx_avg", "wan_tx_max"
+    ].forEach(id => { this.elements[id] = document.getElementById(id); });
+
+    this.elements.system_uptime_control = document.getElementById("system_uptime_control");
+    this.elements.adb_status_val        = document.getElementById("adb_status_val");
+    this.elements.adb_domains_val       = document.getElementById("adb_domains_val");
+    this.elements.adb_widget_link        = document.getElementById("adb_widget_link");
+    this.elements.mem_free_text         = document.getElementById("mem_free_text");
+    this.elements.mem_sparkline         = document.getElementById("mem_sparkline");
+    this.elements.mem_spark_tooltip     = document.getElementById("mem_spark_tooltip");
+    this.elements.wan_uptime_row        = document.getElementById("wan_uptime_row");
+    this.elements.wan_down_msg          = document.getElementById("wan_down_msg");
+
+    const sparkCanvas  = this.elements.mem_sparkline;
+    const sparkTooltip = this.elements.mem_spark_tooltip;
+    if (sparkCanvas && sparkTooltip) {
+      sparkCanvas.addEventListener("mousemove", (e) => {
+        const pts = this.memSparkHistory;
+        if (!pts.length) return;
+        const rect    = sparkCanvas.getBoundingClientRect();
+        const mx      = e.clientX - rect.left;
+        const idx     = Math.round((mx / rect.width) * (pts.length - 1));
+        const clamped = Math.max(0, Math.min(pts.length - 1, idx));
+        sparkTooltip.textContent   = pts[clamped].toFixed(1) + "%";
+        sparkTooltip.style.display = "block";
+        const hw       = sparkTooltip.offsetWidth / 2;
+        const clampedX = Math.max(hw, Math.min(rect.width - hw, mx));
+        sparkTooltip.style.left = clampedX + "px";
+        this._sparkHoverIdx = clamped;
+        this.drawSparkline(clamped);
+      });
+      sparkCanvas.addEventListener("mouseleave", () => {
+        sparkTooltip.style.display = "none";
+        this._sparkHoverIdx = null;
+        this.drawSparkline();
+      });
+
+      if (typeof ResizeObserver !== "undefined") {
+        new ResizeObserver(() => {
+          this.drawSparkline(this._sparkHoverIdx != null ? this._sparkHoverIdx : null);
+        }).observe(sparkCanvas);
+      }
+    }
+  },
+
+  drawSparkline(hoverIdx = null) {
+    const canvas = this.elements.mem_sparkline;
+    if (!canvas || !canvas.getContext) return;
+    const pts = this.memSparkHistory;
+    if (pts.length < 2) return;
+    const dpr = window.devicePixelRatio || 1;
+    const w   = canvas.offsetWidth  || 80;
+    const h   = canvas.offsetHeight || 28;
+    canvas.width  = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+    const ctx = canvas.getContext("2d");
+    ctx.scale(dpr, dpr);
+    ctx.clearRect(0, 0, w, h);
+
+    const padT = 3, padB = 3;
+    const coords = pts.map((v, i) => [
+      (i / (pts.length - 1)) * w,
+      padT + (1 - Math.min(100, Math.max(0, v)) / 100) * (h - padT - padB)
+    ]);
+
+    const grad = ctx.createLinearGradient(0, 0, 0, h);
+    grad.addColorStop(0, "rgba(38,198,218,0.28)");
+    grad.addColorStop(1, "rgba(38,198,218,0)");
+    ctx.beginPath();
+    ctx.moveTo(coords[0][0], h);
+    coords.forEach(([x, y]) => ctx.lineTo(x, y));
+    ctx.lineTo(coords[coords.length - 1][0], h);
+    ctx.closePath();
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    ctx.beginPath();
+    coords.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y));
+    ctx.strokeStyle = "#26c6da";
+    ctx.lineWidth   = 1;
+    ctx.stroke();
+
+    if (hoverIdx !== null && hoverIdx >= 0 && hoverIdx < coords.length) {
+      const [hx, hy] = coords[hoverIdx];
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(hx, 0);
+      ctx.lineTo(hx, h);
+      ctx.strokeStyle = "rgba(38,198,218,0.40)";
+      ctx.lineWidth   = 1;
+      ctx.setLineDash([3, 3]);
+      ctx.stroke();
+      ctx.restore();
+      ctx.beginPath();
+      ctx.arc(hx, hy, 3, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(255,255,255,0.25)";
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(hx, hy, 2, 0, Math.PI * 2);
+      ctx.fillStyle = "#26c6da";
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(hx, hy, 2, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(255,255,255,0.90)";
+      ctx.lineWidth   = 1;
+      ctx.stroke();
+    }
+  },
+
+  refreshWanRates() {
+    const rxH = this.rxHistory, txH = this.txHistory;
+    if (!rxH.length) return;
+    const last   = rxH.length - 1;
+    const rxAvg  = rxH.reduce((a, b) => a + b, 0) / rxH.length;
+    const txAvg  = txH.reduce((a, b) => a + b, 0) / txH.length;
+    const el     = this.elements;
+    if (el.wan_rx_value) el.wan_rx_value.textContent = this.formatWanRate(rxH[last]);
+    if (el.wan_tx_value) el.wan_tx_value.textContent = this.formatWanRate(txH[last]);
+    if (el.wan_rx_avg)   el.wan_rx_avg.textContent   = this.formatWanRate(rxAvg);
+    if (el.wan_rx_max)   el.wan_rx_max.textContent   = this.formatWanRate(Math.max(...rxH));
+    if (el.wan_tx_avg)   el.wan_tx_avg.textContent   = this.formatWanRate(txAvg);
+    if (el.wan_tx_max)   el.wan_tx_max.textContent   = this.formatWanRate(Math.max(...txH));
+  },
+
+  updateBar(el, value, max = 100, greenEnd = 60, yellowEnd = 90) {
+    if (!el) return;
+    const pct = Math.min(100, Math.max(0, (Number(value) || 0) / (Number(max) || 100) * 100));
+    let cs, ce;
+    if (pct <= greenEnd)       { cs = "hsl(120,100%,45%)"; ce = "hsl(90,100%,50%)"; }
+    else if (pct <= yellowEnd) { cs = "hsl(90,100%,50%)";  ce = "hsl(50,100%,50%)"; }
+    else                       { cs = "hsl(50,100%,50%)";  ce = "hsl(0,100%,50%)"; }
+    el.style.width      = pct + "%";
+    el.style.background = `linear-gradient(to right, ${cs}, ${ce})`;
+  },
+
+  async fetchData(force = false) {
+    const headers = {};
+    if (!force && this.etag) headers["If-None-Match"] = this.etag;
+    const res = await fetch("/cgi-bin/luci/admin/status/dashboard", { headers });
+    if (res.status === 304) return null;
+    if (!res.ok) throw new Error("Failed fetch (HTTP " + res.status + ")");
+    const et = res.headers.get("ETag");
+    if (et) this.etag = et.replace(/"/g, "");
+    const json = await res.json();
+    if (json && json.error) {
+      console.error("Lua error:", json.error);
+      throw new Error("Lua: " + json.error);
+    }
+    return json;
+  },
+
+  formatWanRate(bps) {
+    if (!isFinite(bps) || bps < 0) bps = 0;
+    if (this.wanUnit === "Mbps") {
+      const mbps = bps * 8 / 1e6;
+      if (mbps >= 1000) return (mbps / 1000).toFixed(2) + " Gbps";
+      if (mbps >= 1)    return mbps.toFixed(2) + " Mbps";
+      return (bps * 8 / 1e3).toFixed(1) + " Kbps";
+    }
+    if (bps >= 1073741824) return (bps / 1073741824).toFixed(2) + " GB/s";
+    if (bps >= 1048576)    return (bps / 1048576).toFixed(2)    + " MB/s";
+    if (bps >= 1024)       return (bps / 1024).toFixed(1)       + " KB/s";
+    return bps.toFixed(0) + " B/s";
+  },
+
+  writeTemp(el, val) {
+    if (el) el.innerHTML = (Number(val) || 0).toFixed(1) + " &deg;C";
+  },
+
+  escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
+    );
+  },
+
+  formatUptimeFlex(u) {
+    if (u == null) return "N/A";
+    if (typeof u === "string" && isNaN(Number(u.trim()))) return u;
+    const s = Math.max(0, Math.floor(Number(u) || 0));
+    const d = Math.floor(s / 86400), h = Math.floor((s % 86400) / 3600), m = Math.floor((s % 3600) / 60);
+    if (d > 0) return `${d}d ${h}h ${m}m`;
+    if (h > 0) return `${h}h ${m}m`;
+    if (m > 0) return `${m}m`;
+    return s === 0 ? "0s" : `${s}s`;
+  },
+
+  normalizeIspName(raw) {
+    if (!raw) return { isp: "N/A", asn: "" };
+    let s = String(raw).trim();
+    if (s.startsWith("{")) {
+      try { const o = JSON.parse(s); s = o.org || o.provider || o.carrier || o.isp || "N/A"; }
+      catch (_) { s = s.replace(/^[{]+|[}]+$/g, "").trim(); }
+    }
+    s = s.replace(/^"+|"+$/g, "").trim();
+    const m = s.match(/AS\s*?(\d+)/i);
+    let asn = "";
+    if (m) { asn = "AS" + m[1]; s = s.replace(m[0], "").trim(); }
+    if (!s) s = String(raw).replace(/^[{"]+|[}"]+$/g, "").trim() || "N/A";
+    return { isp: s || "N/A", asn };
+  },
+
+  makeAsnLink(raw) {
+    if (!raw) return "";
+    let a = String(raw).trim();
+    if (!a || a.toUpperCase() === "N/A") return "";
+    if (!/^AS/i.test(a)) a = "AS" + a;
+    const num = a.toUpperCase();
+    return `<a class="isp_asn" href="https://ipinfo.io/${encodeURIComponent(num)}" target="_blank" rel="noopener noreferrer">${this.escapeHtml(num)}</a>`;
+  },
+
+  applyNetworkFields(net, initial = false) {
+    if (!net || !this.elements.net_status) return;
+    const el     = this.elements;
+    if (!el.wan_uptime_row) el.wan_uptime_row = document.getElementById("wan_uptime_row");
+    if (!el.wan_down_msg)   el.wan_down_msg   = document.getElementById("wan_down_msg");
+    const status = (typeof net.status === "string") ? net.status.trim().toLowerCase() : "";
+
+    if (status === "online" || status === "up") {
+      const rtt = (net.ping_rtt_ms != null && isFinite(net.ping_rtt_ms))
+        ? `<span style="opacity:0.92;font-weight:400;margin-left:5px;font-size:0.91em;">${Number(net.ping_rtt_ms).toFixed(1)} ms</span>`
+        : "";
+      el.net_status.className = "badge online";
+      el.net_status.innerHTML = `<span class="status-dot dot-online"></span><span>Online${rtt}</span>`;
+    } else if (status === "offline" || status === "down") {
+      el.net_status.className = "badge offline";
+      const secs = Number(net.downtime_seconds || 0);
+      const durStr = secs > 0
+        ? `<span class="badge-downtime-for">for ${this.formatUptimeFlex(secs)}</span>`
+        : "";
+      el.net_status.innerHTML = `<span class="status-dot dot-offline"></span><span class="badge-offline-stack"><span class="badge-offline-label">Offline</span>${durStr}</span>`;
+    } else {
+      el.net_status.className = "badge";
+      el.net_status.innerHTML = "N/A";
+    }
+
+    const dot = el.net_status.querySelector(".status-dot");
+    if (dot && !initial) { dot.classList.remove("pulsing"); void dot.offsetWidth; dot.classList.add("pulsing"); }
+
+    if (el.net_public_ip)
+      el.net_public_ip.textContent = (net.status === "offline") ? "-" : (net.public_ipv4 || "N/A");
+
+    if (el.ipv6_block && el.net_public_ipv6) {
+      const has = net.public_ipv6 && net.public_ipv6 !== "-" && net.public_ipv6 !== "N/A";
+      el.net_public_ipv6.textContent    = has ? net.public_ipv6 : "";
+      el.ipv6_block.style.display       = has ? "block" : "none";
+    }
+
+    const norm     = this.normalizeIspName((net.status === "offline") ? "-" : (net.isp_name || "N/A"));
+    const asnFinal = (norm.asn && norm.asn !== "N/A") ? norm.asn
+      : ((net.isp_asn && String(net.isp_asn).trim()) ? String(net.isp_asn).trim() : "");
+    if (el.net_isp) {
+      const name    = this.escapeHtml(norm.isp || "N/A");
+      const showAsn = net.status !== "offline" && asnFinal;
+      el.net_isp.innerHTML = `<span class="isp_name">${name}</span>` + (showAsn ? this.makeAsnLink(asnFinal) : "");
+    }
+
+    const wanType  = (typeof net.wan_type   === "string") ? net.wan_type.trim().toLowerCase()   : "";
+    const wanStat  = (typeof net.wan_status === "string") ? net.wan_status.trim().toLowerCase() : "";
+    const wanSecs = Number(net.wan_uptime_seconds)   || 0;
+    const wanDown = Number(net.wan_downtime_seconds) || 0;
+
+    const wanUptimeEl  = el.net_wan_uptime  || document.getElementById("net_wan_uptime");
+    const wanLabelEl   = el.net_wan_uptime_label || document.getElementById("net_wan_uptime_label");
+    const wanUpRow     = el.wan_uptime_row  || document.getElementById("wan_uptime_row");
+    const wanDownMsg   = el.wan_down_msg    || document.getElementById("wan_down_msg");
+
+    if (wanUptimeEl) el.net_wan_uptime       = wanUptimeEl;
+    if (wanLabelEl)  el.net_wan_uptime_label = wanLabelEl;
+    if (wanUpRow)    el.wan_uptime_row        = wanUpRow;
+    if (wanDownMsg)  el.wan_down_msg          = wanDownMsg;
+
+    if (wanLabelEl) {
+      if      (wanType === "pppoe")  wanLabelEl.textContent = "PPPoE Uptime";
+      else if (wanType === "dhcp")   wanLabelEl.textContent = "DHCP Uptime";
+      else if (wanType === "static") wanLabelEl.textContent = "WAN Uptime";
+      else if (wanType !== "")       wanLabelEl.textContent = wanType.toUpperCase() + " Uptime";
+    }
+
+    if (wanStat === "down") {
+      if (wanUpRow)   wanUpRow.style.display = "none";
+      if (wanDownMsg) {
+        const downFor   = wanDown > 0 ? " for " + this.formatUptimeFlex(wanDown) : "";
+        let msgText;
+        if (wanType === "dhcp" || wanType === "dhcpv6") {
+          msgText = "WAN is down" + downFor + ". No DHCP lease.";
+        } else if (wanType === "static") {
+          msgText = "WAN is down" + downFor + ".";
+        } else if (wanType !== "" && wanType !== "unknown") {
+          msgText = wanType.toUpperCase() + " is down" + downFor + ".";
+        } else {
+          msgText = "WAN is down" + downFor + ".";
+        }
+        wanDownMsg.innerHTML     = `<i class="fas fa-triangle-exclamation"></i>${this.escapeHtml(msgText)}`;
+        wanDownMsg.style.display = "flex";
+      }
+      if (wanUptimeEl) { wanUptimeEl.textContent = "Down"; wanUptimeEl.classList.add("net-status-offline"); }
+    } else {
+      if (wanUpRow)   wanUpRow.style.display   = "";
+      if (wanDownMsg) wanDownMsg.style.display  = "none";
+      if (wanUptimeEl) {
+        wanUptimeEl.textContent = this.formatUptimeFlex(wanSecs);
+        wanUptimeEl.classList.remove("net-status-offline", "net-status-online");
+        wanUptimeEl.style.color = "";
+      }
+    }
+  },
+
+  async update(initial = false, force = false) {
+    if (document.hidden) return;
+    if (this._updating) return;
+    this._updating = true;
+
+    const now = Date.now();
+    try {
+      const data = await this.fetchData(initial || force);
+      if (data === null) { this._updating = false; return; }
+
+      const bypass = this._bypassMinDelta;
+      if (bypass) this._bypassMinDelta = false;
+      const skipDelta = !bypass && this.prevTime !== null && (now - this.prevTime) < this.config.minDeltaGap;
+
+      const banner = document.getElementById("error_banner");
+      if (banner) banner.style.display = "none";
+
+      if (!this._firstFetchDone) {
+        this._firstFetchDone = true;
+        savePageCache(data);
+      } else {
+        if (Math.random() < 0.07) savePageCache(data);
+      }
+
+      const pending = [];
+      const el = this.elements;
+
+      if (el.system_uptime_control)
+        el.system_uptime_control.textContent =
+          this.formatUptimeFlex(Number(data?.system_uptime_seconds ?? data?.system_uptime ?? 0));
+
+      if (initial || now - (this.lastUpdate.adblock || 0) >= this.config.adblockUpdateInterval) {
+        this.lastUpdate.adblock = now;
+        const iconWrap = document.querySelector(".adb_icon_wrap");
+        const adbNotInstalled = !data?.adblock
+          || data.adblock.installed === false
+          || (data.adblock.installed == null && !data.adblock.status);
+        if (adbNotInstalled) {
+          if (el.adb_status_val)  {
+            el.adb_status_val.style.display = "";
+            el.adb_status_val.textContent   = "Not Installed";
+            el.adb_status_val.style.color   = "rgba(220,80,80,0.65)";
+          }
+          if (el.adb_domains_val) { el.adb_domains_val.textContent = ""; }
+          if (iconWrap) iconWrap.classList.remove("adb_enabled");
+          if (el.adb_widget_link) {
+            el.adb_widget_link.href  = "/cgi-bin/luci/admin/system/package-manager";
+            el.adb_widget_link.title = "Click to Install Adblock Package";
+          }
+        } else {
+          const adb     = data.adblock;
+          const status  = (adb.status || "").toLowerCase();
+          const enabled = (status === "enabled");
+          const stopped = (status === "stopped" || status === "");
+          if (el.adb_status_val) {
+            el.adb_status_val.style.display = "";
+            el.adb_status_val.textContent   = enabled ? "Enabled" : (stopped ? "Stopped" : "Disabled");
+            el.adb_status_val.style.color   = enabled ? "#66bb6a" : (stopped ? "rgba(255,255,255,0.35)" : "#ef5350");
+          }
+          if (iconWrap) iconWrap.classList.toggle("adb_enabled", enabled);
+          if (el.adb_domains_val) {
+            const n = parseInt(String(adb.blocked_domains).replace(/[^0-9]/g, ""), 10) || 0;
+            const label = n >= 1000 ? (n / 1000).toFixed(0) + "K" : String(n);
+            el.adb_domains_val.textContent = enabled ? label + " domains blocked" : "";
+            el.adb_domains_val.style.color = "";
+          }
+          if (el.adb_widget_link) {
+            el.adb_widget_link.href  = "/cgi-bin/luci/admin/services/adblock";
+            el.adb_widget_link.title = "Open Adblock settings";
+          }
+        }
+      }
+
+      if (data?.network) this.applyNetworkFields(data.network, initial);
+
+      if (data?.cpu) {
+        const c     = data.cpu;
+        const total = (c.usr||0)+(c.nice||0)+(c.sys||0)+(c.idle||0)+(c.iowait||0)+(c.irq||0)+(c.softirq||0)+(c.steal||0);
+        const idle  = (c.idle||0)+(c.iowait||0);
+        let cpuPercent = null;
+        if (this.lastCpu && !skipDelta) {
+          const dT = total - this.lastCpu.total, dI = idle - this.lastCpu.idle;
+          if (dT > 0) cpuPercent = ((dT - dI) / dT) * 100;
+        }
+        this.lastCpu = { total, idle };
+
+        if (cpuPercent !== null) {
+          pending.push(() => {
+            if (el.cpuPercentText) el.cpuPercentText.textContent = cpuPercent.toFixed(1) + "%";
+            if (el.cpuBarFill) {
+              el.cpuBarFill.style.width      = Math.min(100, Math.max(0, cpuPercent)) + "%";
+              el.cpuBarFill.style.background = "linear-gradient(to right, rgba(126,87,194,0.75), #7e57c2)";
+            }
+            this.cpuHistory.push(cpuPercent);
+            const avg = this.cpuHistory.reduce((a, b) => a + b, 0) / this.cpuHistory.length;
+            if (el.cpuAvgText) el.cpuAvgText.textContent = avg.toFixed(1) + "%";
+            if (el.cpuMaxText) el.cpuMaxText.textContent = Math.max(...this.cpuHistory).toFixed(1) + "%";
+            if (el.cpuTempBadge && "cpu_temp" in data) {
+              const t = Number(data.cpu_temp) || 0;
+              el.cpuTempBadge.textContent = Math.round(t) + " °C";
+              el.cpuTempBadge.className   = "temp_badge " + (t > 75 ? "temp_badge_hot" : t > 60 ? "temp_badge_warm" : "temp_badge_ok");
+            }
+          });
+
+          pending.push(() => {
+            cpuLineChart.data.labels.push("");
+            cpuLineChart.data.datasets[0].data.push(parseFloat(cpuPercent.toFixed(1)));
+            if (cpuLineChart.data.labels.length > 60) {
+              cpuLineChart.data.labels.shift();
+              cpuLineChart.data.datasets[0].data.shift();
+            }
+            cpuLineChart.update("none");
+          });
+        }
+
+        if (data.cpu_cores && data.cpu_cores.length > 1) {
+          pending.push(() => {
+            const usage = this.computeCoreUsage(data.cpu_cores);
+            if (!usage) return;
+            if (!cpuCoreChart) {
+              const anchor = document.querySelector(".cpu_merged_chart");
+              if (!anchor) return;
+              const isDark  = !document.getElementById("custom_status_container").classList.contains("theme-light");
+              const section = document.createElement("div");
+              section.className = "cpu-core-section";
+              section.id        = "cpu_core_section";
+              section.innerHTML = '<div class="cpu-core-label">Cores</div><div class="cpu-core-canvas-wrap"><canvas id="cpuCoreChart"></canvas></div>';
+              anchor.insertAdjacentElement("afterend", section);
+
+              cpuCoreChart = new Chart(document.getElementById("cpuCoreChart"), {
+                type: "bar",
+                data: { labels: [], datasets: [{ data: [], backgroundColor: [], borderRadius: 3, borderSkipped: false }] },
+                plugins: [coreBarLabelPlugin],
+                options: {
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  animation: {
+                    duration: 500,
+                    easing: "easeOutQuart",
+                    delay: (ctx) => ctx.type === "data" && ctx.mode === "default"
+                      ? ctx.dataIndex * 35
+                      : 0
+                  },
+                  layout: { padding: { top: 20, bottom: 0, left: 2, right: 2 } },
+                  plugins: {
+                    legend: { display: false },
+                    tooltip: { callbacks: { title: () => null, label: ctx => "Core " + (ctx.dataIndex + 1) + ": " + Number(ctx.raw).toFixed(1) + "%" } }
+                  },
+                  scales: {
+                    y: { min: 0, max: 100,
+                      ticks: { display: false, color: isDark ? "rgba(255,255,255,0.65)" : "rgba(30,30,40,0.80)" },
+                      grid:  { color: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.08)", drawTicks: false },
+                      border: { display: false }
+                    },
+                    x: { display: false }
+                  }
+                }
+              });
+
+              setTimeout(() => {
+                if (cpuCoreChart) {
+                  cpuCoreChart.options.animation = { duration: 280, easing: "easeOutQuart" };
+                  delete cpuCoreChart.options.animation.delay;
+                }
+              }, 600);
+            }
+            const colors = usage.map(v => v <= 60 ? "rgba(100,180,80,0.85)" : v <= 90 ? "rgba(255,180,40,0.85)" : "rgba(220,60,60,0.85)");
+            if (this.coreHistories.length !== usage.length) this.coreHistories = usage.map(() => []);
+            usage.forEach((v, i) => this.coreHistories[i].push(v));
+            cpuCoreChart._coreAvg = this.coreHistories.map(h => h.reduce((a, b) => a + b, 0) / h.length);
+            cpuCoreChart._coreMax = this.coreHistories.map(h => Math.max(...h));
+            cpuCoreChart.data.labels                      = usage.map((_, i) => "C" + (i + 1));
+            cpuCoreChart.data.datasets[0].data            = usage.map(v => parseFloat(v.toFixed(1)));
+            cpuCoreChart.data.datasets[0].backgroundColor = colors;
+            cpuCoreChart.update();
+          });
+        }
+      }
+
+      if (!skipDelta && this.prevRX !== null && this.prevTX !== null && this.prevTime !== null) {
+        const sec = (now - this.prevTime) / 1000;
+        if (sec > 0) {
+          const rxRate = (data.net.rx - this.prevRX) / sec;
+          const txRate = (data.net.tx - this.prevTX) / sec;
+          this.rxHistory.push(rxRate);
+          this.txHistory.push(txRate);
+          pending.push(() => {
+            if (!netChart) return;
+            netChart.data.labels.push("");
+            netChart.data.datasets[0].data.push(rxRate);
+            netChart.data.datasets[1].data.push(txRate);
+            if (netChart.data.labels.length > 60) {
+              netChart.data.labels.shift();
+              netChart.data.datasets.forEach(d => d.data.shift());
+            }
+            netChart.update("none");
+            this.refreshWanRates();
+          });
+        }
+      }
+      this.prevRX   = data.net.rx;
+      this.prevTX   = data.net.tx;
+      this.prevTime = now;
+
+      if (data?.mem) {
+        const total  = Number(data.mem.total) || 0;
+        const avail  = Number(data.mem.avail) || 0;
+        const memPct = total > 0 ? (total - avail) / total * 100 : 0;
+        if (initial || now - (this.lastUpdate.mem || 0) >= this.config.memInterval) {
+          this.lastUpdate.mem = now;
+          pending.push(() => {
+            if (this.memSparkHistory.length === 0) {
+              for (let i = 0; i < 20; i++) this.memSparkHistory.push(memPct);
+            }
+            this.memSparkHistory.push(memPct);
+            if (this.memSparkHistory.length > 40) this.memSparkHistory.shift();
+
+            const arcColor = memPct < 70 ? "#26c6da" : memPct < 87 ? "#b07d10" : "#b33329";
+            if (el.mem_arc_fill) {
+              el.mem_arc_fill.style.strokeDashoffset = (113 * (1 - memPct / 100)).toFixed(2);
+              el.mem_arc_fill.style.stroke = arcColor;
+            }
+            if (el.mem_arc_pct) el.mem_arc_pct.textContent = memPct.toFixed(1) + "%";
+
+            const fmt = mb => mb > 1024 ? (mb / 1024).toFixed(2) + " GB" : mb.toFixed(1) + " MB";
+            if (el.custom_mem)    el.custom_mem.textContent    = fmt((total - avail) / 1024);
+            if (el.mem_free_text) el.mem_free_text.textContent = fmt(avail / 1024);
+
+            this.drawSparkline();
+          });
+        }
+      }
+
+      if (data?.wifi) {
+        if (initial || now - (this.lastUpdate.wifiCounts || 0) >= this.config.wifiCountsInterval) {
+          this.lastUpdate.wifiCounts = now;
+
+          const sortedAps = (data.wifi.aps || []).slice().sort((a, b) => {
+            const ca = Number(a.count || 0), cb = Number(b.count || 0);
+            if (ca > 0 && cb === 0) return -1;
+            if (ca === 0 && cb > 0) return  1;
+            return 0;
+          });
+
+          const apRows = sortedAps.map(ap => {
+            const count = Number(ap.count || 0);
+            const q     = (ap.quality != null) ? Number(ap.quality) : null;
+            let bandCls = "cl_band cl_band_24g", bandTxt = "2.4 GHz";
+            if      (ap.band === "5_Ghz") { bandCls = "cl_band cl_band_5g"; bandTxt = "5 GHz"; }
+            else if (ap.band === "6_Ghz") { bandCls = "cl_band cl_band_6g"; bandTxt = "6 GHz"; }
+            const sigTitle = (q != null) ? `Signal: ${q}%` : "Signal: N/A";
+            const isLight = document.getElementById("custom_status_container")?.classList.contains("theme-light");
+            const dim = isLight ? "rgba(0,0,0,0.15)" : "rgba(255,255,255,0.18)";
+            let col, a1col, a2col;
+            if      (q == null || q < 1)  { col = dim;      a1col = dim;      a2col = dim; }
+            else if (q < 40)              { col = "#e53935"; a1col = dim;      a2col = dim; }
+            else if (q < 70)              { col = "#fb8c00"; a1col = "#fb8c00"; a2col = dim; }
+            else                          { col = "#43a047"; a1col = "#43a047"; a2col = "#43a047"; }
+            const sigSvg =
+              `<svg class="cl_signal" viewBox="0 0 16 18" width="14" height="14" title="${sigTitle}">` +
+                `<circle cx="8" cy="11.5" r="1.8" fill="${col}"/>` +
+                `<path d="M5.0 10.1 A3.6 3.6 0 0 1 11.0 10.1" fill="none" stroke="${a1col}" stroke-width="2" stroke-linecap="round"/>` +
+                `<path d="M1.9 8.0 A7.0 7.0 0 0 1 14.1 8.0" fill="none" stroke="${a2col}" stroke-width="2" stroke-linecap="round"/>` +
+              `</svg>`;
+            const row = document.createElement("div");
+            row.className = "cl_ap_row" + (count === 0 ? " wifi_ap_faded" : "");
+            row.innerHTML =
+              `<span class="${bandCls}">${bandTxt}</span>` +
+              `<span class="ap_name">${this.escapeHtml(ap.essid)}</span>` +
+              `<span class="ap_sig_count">${sigSvg}<span class="ap_count">${count}</span></span>`;
+            return row;
+          });
+
+          pending.push(() => {
+            if (el.custom_wifi_total) el.custom_wifi_total.textContent = data.wifi.total || 0;
+            const apDiv = document.getElementById("custom_wifi_ap_list");
+            if (apDiv) {
+              apDiv.textContent = "";
+              if (apRows.length === 0) {
+                apDiv.innerHTML = '<div class="cl_no_lan">No active APs</div>';
+              } else {
+                const frag = document.createDocumentFragment();
+                apRows.forEach(r => frag.appendChild(r));
+                apDiv.appendChild(frag);
+              }
+            }
+          });
+        }
+
+        if (initial || now - (this.lastUpdate.wifiTemp || 0) >= this.config.wifiTempInterval) {
+          this.lastUpdate.wifiTemp = now;
+          const wifiTemp = Number(data.wifi_temp) || 0;
+          pending.push(() => {
+            if (el.custom_wifi_temp) el.custom_wifi_temp.textContent = Math.round(wifiTemp) + " °C";
+            if (el.wifi_temp_dot) {
+              el.wifi_temp_dot.className = "cl_tdot " + (wifiTemp > 75 ? "hot" : wifiTemp > 60 ? "warm" : "ok");
+            }
+            if (el.wifi_temp_foot) el.wifi_temp_foot.style.opacity = "1";
+          });
+        }
+      }
+
+      if (initial || now - (this.lastUpdate.clients || 0) >= this.config.clientsUpdateInterval) {
+        this.lastUpdate.clients = now;
+        if (data?.lan) {
+          const ports = data.lan.ports || [];
+          const total = data.lan.total || 0;
+
+          const lanRows = ports.map(p => {
+            const row = document.createElement("div");
+            row.className = "cl_lan_row" + (p.active ? "" : " wifi_ap_faded");
+
+            // Bridge/AP hint badge — same style as crt hint-badge-bridge
+            const apChip = p.ap_label
+              ? `<span class="cl_hint_badge cl_hint_badge_bridge" title="Multiple devices detected on this port — bridge, AP, or switch">⇄ Bridge / AP</span>`
+              : "";
+
+            // Speed pill
+            let speedHtml = "";
+            if (p.active && p.speed) {
+              const cls = p.speed >= 1000 ? "cl_speed cl_speed_gig" : "cl_speed cl_speed_100";
+              const lbl = p.speed >= 1000 ? p.speed / 1000 + " Gbps" : p.speed + " Mbps";
+              speedHtml = `<span class="${cls}">${lbl}</span>`;
+            } else if (!p.active) {
+              speedHtml = `<span style="font-size:0.75em;opacity:0.4;">inactive</span>`;
+            }
+
+            // Client count badge — indigo circle, only when AP/Bridge detected
+            const countBadge = (p.ap_label && p.mac_count >= 1)
+              ? `<span class="cl_mac_count" title="${p.mac_count} device${p.mac_count !== 1 ? 's' : ''} behind this port">${p.mac_count}</span>`
+              : "";
+
+            row.innerHTML =
+              `<span class="lan_name"><i class="fas fa-ethernet"></i>${this.escapeHtml(p.name)}</span>` +
+              apChip +
+              `<span class="cl_lan_spacer"></span>` +
+              countBadge +
+              speedHtml;
+            return row;
+          });
+
+          const wanOnline = (data?.network?.status === "online");
+          const wanIfName = (data?.net?.iface) || "WAN";
+          const wanDot = document.createElement("span");
+          wanDot.className = "cl_port_dot_wan " + (wanOnline ? "wan_online" : "wan_offline");
+          wanDot.title     = wanIfName + " — " + (wanOnline ? "online" : "offline");
+          wanDot.innerHTML = '<i class="fas fa-globe"></i>';
+
+          const wanSep = document.createElement("span");
+          wanSep.className = "cl_wan_sep";
+
+          const dotEls = ports.map(p => {
+            const dot = document.createElement("span");
+            if (!p.active) {
+              dot.className = "cl_port_dot inactive";
+              dot.title     = p.name + " — inactive";
+            } else if (p.speed && p.speed >= 1000) {
+              dot.className = "cl_port_dot active_gig";
+              dot.title     = p.name + " — " + (p.speed / 1000) + " Gbps";
+            } else {
+              dot.className = "cl_port_dot active_100m";
+              dot.title     = p.name + " — " + (p.speed || "?") + " Mbps";
+            }
+            return dot;
+          });
+
+          pending.push(() => {
+            if (el.custom_lan_total) el.custom_lan_total.textContent = total;
+            const div = el.custom_lan_ports;
+            if (div) {
+              div.textContent = "";
+              if (ports.length === 0) {
+                div.innerHTML = '<div class="cl_no_lan"><i class="fas fa-network-wired" style="margin-right:6px;"></i>No LAN ports</div>';
+              } else {
+                const frag = document.createDocumentFragment();
+                lanRows.forEach(r => frag.appendChild(r));
+                div.appendChild(frag);
+              }
+            }
+            const dotsDiv = el.custom_lan_port_dots;
+            if (dotsDiv) {
+              dotsDiv.textContent = "";
+              const frag = document.createDocumentFragment();
+              frag.appendChild(wanDot);
+              frag.appendChild(wanSep);
+              dotEls.forEach(d => frag.appendChild(d));
+              dotsDiv.appendChild(frag);
+              if (el.custom_lan_port_strip) el.custom_lan_port_strip.style.display = "";
+            }
+          });
+        }
+      }
+
+      if (!document.hidden && (initial || now - (this.lastUpdate.vnstat || 0) >= this.config.vnstatUpdateInterval)) {
+        this.lastUpdate.vnstat = now;
+        if (data?.vnstat) {
+          this.lastVnstatData = data.vnstat;
+
+          const rawIfaces  = Array.isArray(data.vnstat.ifaces) ? data.vnstat.ifaces : [];
+          const ifaceNames = rawIfaces.map(f => (typeof f === "object" ? f.name : f));
+          const newIfaceList = JSON.stringify(ifaceNames);
+
+          if (newIfaceList !== this._lastVnstatIfaceList) {
+            this._lastVnstatIfaceList = newIfaceList;
+            const menu     = document.getElementById("vn_iface_menu");
+            const dropdown = document.getElementById("vn_iface_dropdown");
+            const labelEl  = document.getElementById("vn_iface_label");
+
+            if (!this.vnstatIface || !ifaceNames.includes(this.vnstatIface)) {
+              this.vnstatIface = ifaceNames[0] || null;
+            }
+
+            if (menu && rawIfaces.length > 0) {
+              menu.innerHTML = rawIfaces.map(f => {
+                const nm  = typeof f === "object" ? f.name  : f;
+                const lbl = typeof f === "object" ? f.label : f;
+                const active = nm === this.vnstatIface;
+                return `<div class="wan-unit-option${active ? " active" : ""}" ` +
+                       `data-iface="${this.escapeHtml(nm)}" role="option" ` +
+                       `aria-selected="${active}">${this.escapeHtml(lbl)}</div>`;
+              }).join("");
+              menu.querySelectorAll(".wan-unit-option").forEach(opt => {
+                opt.addEventListener("click", e => {
+                  e.stopPropagation();
+                  window._applyVnstatIface(opt.dataset.iface);
+                });
+              });
+            }
+
+            if (labelEl) {
+              const sel = rawIfaces.find(f => (typeof f === "object" ? f.name : f) === this.vnstatIface);
+              labelEl.textContent = sel ? (typeof sel === "object" ? sel.label : sel) : (this.vnstatIface || "");
+            }
+            if (dropdown) dropdown.style.display = rawIfaces.length > 1 ? "" : "none";
+          }
+
+          pending.push(() => this.renderVnstatData(data.vnstat));
+        }
+      }
+
+      if (pending.length)
+        requestAnimationFrame(() => {
+          pending.forEach(fn => { try { fn(); } catch (e) { console.warn("pending write failed", e); } });
+        });
+
+    } catch (e) {
+      console.error("CustomRealtime update error:", e);
+      const banner = document.getElementById("error_banner");
+      if (banner) { banner.style.display = "block"; banner.textContent = "Realtime data unavailable"; }
+    } finally {
+      this._updating = false;
+    }
+  },
+
+  async start() {
+    this.cacheElements();
+
+    // Fresh cache (written within MAX_CACHE_AGE_MS) → show immediately,
+    // dismiss the overlay now, and let the live fetch update silently.
+    // Outdated / absent cache → keep the overlay until first live fetch
+    // so the user never sees a screen full of stale or N/A values.
+    const cached = loadPageCache();
+    if (cached) {
+      this.applyCachedData(cached);
+      markStale();
+      markFresh();  // cache is recent enough — no need to show the spinner
+    }
+
+    // Fire adblock cache-clear in the background — do NOT await it.
+    // Awaiting it was adding a full round-trip delay before the first
+    // data fetch even started.
+    fetch("/cgi-bin/luci/admin/status/dashboard/adblock_refresh").catch(() => {});
+
+    // First live fetch. If cache was fresh the overlay is already gone.
+    // If cache was absent/outdated the overlay stays until this resolves,
+    // whether it succeeds or fails.
+    try {
+      await this.update(true);
+    } finally {
+      markFresh();  // no-op if already dismissed; cleans up if overlay is still showing
+    }
+    setTimeout(() => { this._bypassMinDelta = true; this.update(false, true); }, 300);
+
+    try {
+      const blob   = new Blob(
+        [`setInterval(()=>postMessage("t"),${this.config.fetchInterval});`],
+        { type: "application/javascript" }
+      );
+      const worker = new Worker(URL.createObjectURL(blob));
+      worker.onmessage = () => { if (!document.hidden) this.update(false); };
+    } catch (_) {
+      setInterval(() => { if (!document.hidden) this.update(false); }, this.config.fetchInterval);
+    }
+
+    let _resumeGuard = false;
+
+    const handleResume = () => {
+      if (_resumeGuard) return;
+      _resumeGuard = true;
+      setTimeout(() => { _resumeGuard = false; }, 600);
+
+      this.prevTime        = null;
+      this.prevRX          = null;
+      this.prevTX          = null;
+      this.lastCpu         = null;
+      this.lastCoreCounters = {};
+
+      requestAnimationFrame(() => {
+        if (!netChart) ensureNetChart();
+      });
+
+      this.update(false);
+    };
+
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) handleResume();
+    });
+
+    window.addEventListener("pageshow", (e) => {
+      if (e.persisted) handleResume();
+    });
+
+    window.addEventListener("hashchange", () => {
+      setTimeout(handleResume, 100);
+    });
+  }
+};
+
+/* ── Chart theme ── */
+function applyChartTheme(isDark) {
+  const tickColor = isDark ? "rgba(255,255,255,0.65)" : "rgba(30,30,40,0.80)";
+  const gridColor = isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.08)";
+  if (typeof cpuLineChart !== "undefined" && cpuLineChart) {
+    cpuLineChart.data.datasets[0].backgroundColor = isDark ? "rgba(126,87,194,0.15)" : "rgba(126,87,194,0.20)";
+    cpuLineChart.options.scales.y.grid.color       = gridColor;
+    cpuLineChart.options.scales.y.ticks.color      = tickColor;
+    cpuLineChart.update("none");
+  }
+  if (typeof cpuCoreChart !== "undefined" && cpuCoreChart) {
+    cpuCoreChart.options.scales.y.grid.color  = gridColor;
+    cpuCoreChart.options.scales.y.ticks.color = tickColor;
+    cpuCoreChart.update("none");
+  }
+  if (typeof netChart !== "undefined" && netChart) {
+    netChart.options.scales.y.ticks.color = tickColor;
+    netChart.options.scales.y.grid.color  = isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.06)";
+    netChart.update("none");
+  }
+}
+
+function toggleTheme(mode) {
+  const container = document.getElementById("custom_status_container");
+  if (!container) return;
+  container.classList.remove("theme-light", "theme-dark");
+  container.classList.add(mode === "light" ? "theme-light" : "theme-dark");
+  applyChartTheme(mode !== "light");
+  try { localStorage.setItem("__custom_theme", mode); } catch (_) {}
+}
+
+(function initTheme() {
+  let mode = "dark";
+  try {
+    mode = (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light";
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => toggleTheme(e.matches ? "dark" : "light"));
+  } catch (_) {}
+  toggleTheme(mode);
+})();
+
+/* ── WAN Chart ── */
+function ensureNetChart() {
+  const canvas = document.getElementById("netChart");
+  if (!canvas) return;
+  if (typeof netChart !== "undefined" && netChart) return;
+
+  const isDark = !document.getElementById("custom_status_container")?.classList.contains("theme-light");
+  netChart = new Chart(canvas, {
+    type: "line",
+    devicePixelRatio: window.devicePixelRatio || 1,
+    data: { labels: [], datasets: [
+      { data: [], borderColor: getComputedStyle(document.documentElement).getPropertyValue("--rx-tint").trim(),
+        backgroundColor: "rgba(78,168,255,0.10)", fill: true, borderWidth: 2, tension: 0.3,
+        pointRadius: 0, pointHoverRadius: 2.5,
+        pointHoverBackgroundColor: getComputedStyle(document.documentElement).getPropertyValue("--rx-tint").trim(),
+        pointHoverBorderColor: "#fff", pointHoverBorderWidth: 1.5 },
+      { data: [], borderColor: getComputedStyle(document.documentElement).getPropertyValue("--tx-tint").trim(),
+        backgroundColor: "rgba(76,208,138,0.10)", fill: true, borderWidth: 2, tension: 0.3,
+        pointRadius: 0, pointHoverRadius: 2,
+        pointHoverBackgroundColor: getComputedStyle(document.documentElement).getPropertyValue("--tx-tint").trim(),
+        pointHoverBorderColor: "#fff", pointHoverBorderWidth: 1.5 }
+    ]},
+    options: {
+      responsive: true, maintainAspectRatio: false, animation: false,
+      interaction: { mode: "nearest", intersect: false },
+      layout: { padding: { top: 4, bottom: 0, left: 2, right: 2 } },
+      scales: {
+        y: { min: 0,
+          ticks: { font: { size: window.innerWidth >= 768 ? 8.5 : 8 }, padding: 0,
+            color: isDark ? "rgba(255,255,255,0.65)" : "rgba(30,30,40,0.80)",
+            callback: v => window.CustomRealtime.formatWanRate(v) },
+          grid: { drawTicks: false, color: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.06)" },
+          border: { display: false } },
+        x: { display: false }
+      },
+      plugins: { legend: { display: false },
+        tooltip: { enabled: true, callbacks: {
+          label: ctx => (ctx.datasetIndex === 0 ? "⬇ RX: " : "⬆ TX: ") + window.CustomRealtime.formatWanRate(ctx.raw)
+        }}}
+    }
+  });
+
+  const cr = window.CustomRealtime;
+  if (cr && cr.rxHistory && cr.rxHistory.length) {
+    netChart.data.labels = cr.rxHistory.map(() => "");
+    netChart.data.datasets[0].data = [...cr.rxHistory];
+    netChart.data.datasets[1].data = [...cr.txHistory];
+    netChart.update("none");
+  }
+}
+
+var netChart = new Chart(document.getElementById("netChart"), {
+  type: "line",
+  devicePixelRatio: window.devicePixelRatio || 1,
+  data: {
+    labels: [],
+    datasets: [
+      {
+        data: [],
+        borderColor:      getComputedStyle(document.documentElement).getPropertyValue("--rx-tint").trim(),
+        backgroundColor:  "rgba(78,168,255,0.10)",
+        fill: true, borderWidth: 2, tension: 0.3,
+        pointRadius: 0, pointHoverRadius: 2.5,
+        pointHoverBackgroundColor: getComputedStyle(document.documentElement).getPropertyValue("--rx-tint").trim(),
+        pointHoverBorderColor: "#fff", pointHoverBorderWidth: 1.5
+      },
+      {
+        data: [],
+        borderColor:      getComputedStyle(document.documentElement).getPropertyValue("--tx-tint").trim(),
+        backgroundColor:  "rgba(76,208,138,0.10)",
+        fill: true, borderWidth: 2, tension: 0.3,
+        pointRadius: 0, pointHoverRadius: 2,
+        pointHoverBackgroundColor: getComputedStyle(document.documentElement).getPropertyValue("--tx-tint").trim(),
+        pointHoverBorderColor: "#fff", pointHoverBorderWidth: 1.5
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: false,
+    interaction: { mode: "nearest", intersect: false },
+    layout: { padding: { top: 4, bottom: 0, left: 2, right: 2 } },
+    scales: {
+      y: {
+        min: 0,
+        ticks: { font: { size: window.innerWidth >= 768 ? 8.5 : 8 }, padding: 0, color: "rgba(255,255,255,0.65)", callback: v => window.CustomRealtime.formatWanRate(v) },
+        grid:  { drawTicks: false, color: "rgba(255,255,255,0.05)" },
+        border: { display: false }
+      },
+      x: { display: false }
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        enabled: true,
+        callbacks: { label: ctx => (ctx.datasetIndex === 0 ? "⬇ RX: " : "⬆ TX: ") + window.CustomRealtime.formatWanRate(ctx.raw) }
+      }
+    },
+    elements: { point: { radius: 0 } }
+  }
+});
+
+/* ── CPU Line Chart ── */
+var cpuLineChart = new Chart(document.getElementById("cpuLineChart"), {
+  type: "line",
+  devicePixelRatio: window.devicePixelRatio || 1,
+  data: {
+    labels: [],
+    datasets: [{
+      data: [],
+      borderColor: "#7e57c2", borderWidth: 2, tension: 0.35,
+      pointRadius: 0, pointHoverRadius: 2.5,
+      pointHoverBackgroundColor: "#7e57c2", pointHoverBorderColor: "#fff", pointHoverBorderWidth: 1.5,
+      fill: true, backgroundColor: "rgba(126,87,194,0.15)"
+    }]
+  },
+  options: {
+    responsive: false,
+    maintainAspectRatio: false,
+    animation: false,
+    interaction: { mode: "nearest", intersect: false },
+    layout: { padding: { top: 4, bottom: 6, left: 2, right: 2 } },
+    plugins: {
+      legend: { display: false },
+      tooltip: { enabled: true, callbacks: { label: ctx => "CPU: " + Number(ctx.raw).toFixed(1) + "%" } }
+    },
+    scales: {
+      y: {
+        min: 0, max: 100,
+        ticks: { callback: v => v + "%", font: { size: 8.5 }, maxTicksLimit: 5, padding: 2, color: "rgba(255,255,255,0.65)" },
+        grid:  { color: "rgba(255,255,255,0.05)" },
+        border: { display: false }
+      },
+      x: { display: false }
+    }
+  }
+});
+
+/* ── CPU Core Chart (created lazily by JS when core data arrives) ── */
+var cpuCoreChart = null;
+
+const coreBarLabelPlugin = {
+  id: "coreBarLabel",
+  afterDatasetsDraw(chart) {
+    const { ctx } = chart;
+    const dataset  = chart.data.datasets[0];
+    const isDark   = !document.getElementById("custom_status_container").classList.contains("theme-light");
+    const color    = isDark ? "rgba(255,255,255,0.65)" : "rgba(30,30,40,0.80)";
+    const colorSub = isDark ? "rgba(255,255,255,0.45)" : "rgba(30,30,40,0.55)";
+    const dpr      = chart.currentDevicePixelRatio || window.devicePixelRatio || 1;
+    const fMain    = Math.round(8  * dpr) / dpr;
+    const fSub     = Math.round(7.5 * dpr) / dpr;
+    chart.getDatasetMeta(0).data.forEach((bar, i) => {
+      const value = dataset.data[i];
+      if (value == null) return;
+      const avg = chart._coreAvg && chart._coreAvg[i] != null ? chart._coreAvg[i].toFixed(1) + "%" : "--";
+      const max = chart._coreMax && chart._coreMax[i] != null ? chart._coreMax[i].toFixed(1) + "%" : "--";
+      ctx.save();
+      ctx.textAlign    = "center";
+      ctx.textBaseline = "bottom";
+      ctx.fillStyle    = color;
+      ctx.font         = "600 " + fMain + "px sans-serif";
+      ctx.fillText((chart.data.labels[i] || "C" + (i + 1)) + ": " + Number(value).toFixed(1) + "%", bar.x, bar.y - 11);
+      ctx.fillStyle = colorSub;
+      ctx.font      = "600 " + fSub  + "px sans-serif";
+      ctx.fillText("Avg: " + avg + "  Max: " + max, bar.x, bar.y - 2);
+      ctx.restore();
+    });
+  }
+};
+
+/* Re-apply theme now that charts exist */
+(function () {
+  applyChartTheme(!document.getElementById("custom_status_container").classList.contains("theme-light"));
+})();
+
+/* ── WAN unit dropdown ── */
+(function () {
+  const wanDropdown  = document.getElementById("wan_unit_dropdown");
+  const wanTrigger   = document.getElementById("wan_unit_trigger");
+  const wanMenu      = document.getElementById("wan_unit_menu");
+  const wanUnitLabel = document.getElementById("wan_unit_label");
+
+  function closeWanMenu() {
+    if (!wanDropdown) return;
+    wanDropdown.classList.remove("open");
+    if (wanTrigger) wanTrigger.setAttribute("aria-expanded", "false");
+  }
+
+  if (wanTrigger) {
+    wanTrigger.addEventListener("click", e => {
+      e.stopPropagation();
+      const open = wanDropdown.classList.toggle("open");
+      wanTrigger.setAttribute("aria-expanded", String(open));
+    });
+  }
+  document.addEventListener("click", closeWanMenu);
+
+  function applyWanUnit(unit) {
+    const cr = window.CustomRealtime;
+    cr.wanUnit = unit;
+    if (wanUnitLabel) wanUnitLabel.textContent = unit === "MBs" ? "MB/s" : "Mbps";
+    if (wanMenu) {
+      wanMenu.querySelectorAll(".wan-unit-option").forEach(opt => {
+        const sel = opt.dataset.unit === unit;
+        opt.classList.toggle("active", sel);
+        opt.setAttribute("aria-selected", String(sel));
+      });
+    }
+    cr.refreshWanRates();
+    if (typeof netChart !== "undefined") netChart.update("none");
+  }
+
+  if (wanMenu) {
+    wanMenu.querySelectorAll(".wan-unit-option").forEach(opt => {
+      opt.addEventListener("click", e => { e.stopPropagation(); applyWanUnit(opt.dataset.unit); closeWanMenu(); });
+    });
+  }
+})();
+
+/* ── vnStat interface dropdown ── */
+(function () {
+  const dropdown = document.getElementById("vn_iface_dropdown");
+  const trigger  = document.getElementById("vn_iface_trigger");
+
+  function closeMenu() {
+    if (!dropdown) return;
+    dropdown.classList.remove("open");
+    if (trigger) trigger.setAttribute("aria-expanded", "false");
+  }
+
+  if (trigger) {
+    trigger.addEventListener("click", e => {
+      e.stopPropagation();
+      const open = dropdown.classList.toggle("open");
+      trigger.setAttribute("aria-expanded", String(open));
+    });
+  }
+  document.addEventListener("click", closeMenu);
+
+  window._applyVnstatIface = function (iface) {
+    const cr = window.CustomRealtime;
+    if (!cr) return;
+    cr.vnstatIface = iface;
+
+    const labelEl = document.getElementById("vn_iface_label");
+    if (labelEl && cr.lastVnstatData) {
+      const rawIfaces = Array.isArray(cr.lastVnstatData.ifaces) ? cr.lastVnstatData.ifaces : [];
+      const found     = rawIfaces.find(f => (typeof f === "object" ? f.name : f) === iface);
+      labelEl.textContent = found ? (typeof found === "object" ? found.label : found) : iface;
+    } else if (labelEl) {
+      labelEl.textContent = iface;
+    }
+
+    const menu = document.getElementById("vn_iface_menu");
+    if (menu) {
+      menu.querySelectorAll(".wan-unit-option").forEach(opt => {
+        const sel = opt.dataset.iface === iface;
+        opt.classList.toggle("active", sel);
+        opt.setAttribute("aria-selected", String(sel));
+      });
+    }
+    if (cr.lastVnstatData) cr.renderVnstatData(cr.lastVnstatData);
+    closeMenu();
+  };
+})();
+
+(function () {
+  let resizeTimer;
+
+  function resizeAllCharts() {
+    if (typeof netChart !== "undefined" && netChart) {
+      netChart.options.scales.y.ticks.font.size = window.innerWidth >= 768 ? 8.5 : 8;
+      netChart.resize();
+    }
+    if (typeof cpuLineChart !== "undefined" && cpuLineChart) cpuLineChart.resize();
+    if (typeof cpuCoreChart !== "undefined" && cpuCoreChart) cpuCoreChart.resize();
+
+    const cr = window.CustomRealtime;
+    if (cr && cr.memSparkHistory.length > 1) cr.drawSparkline(cr._sparkHoverIdx != null ? cr._sparkHoverIdx : null);
+  }
+
+  function onResize() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(resizeAllCharts, 150);
+  }
+
+  window.addEventListener("resize", onResize);
+  if (screen.orientation) {
+    screen.orientation.addEventListener("change", onResize);
+  } else {
+    window.addEventListener("orientationchange", onResize);
+  }
+
+  (function watchDPR() {
+    const mq = window.matchMedia("(resolution: " + window.devicePixelRatio + "dppx)");
+    mq.addEventListener("change", function handler() {
+      mq.removeEventListener("change", handler);
+      onResize();
+      watchDPR();
+    });
+  })();
+})();
+
+/* ── Seed charts with a flat zero baseline ── */
+(function seedChartsOnLoad() {
+  const SEED_POINTS = 20;
+  const labels = Array(SEED_POINTS).fill("");
+
+  if (typeof netChart !== "undefined" && netChart) {
+    netChart.data.labels             = labels.slice();
+    netChart.data.datasets[0].data   = Array(SEED_POINTS).fill(0);
+    netChart.data.datasets[1].data   = Array(SEED_POINTS).fill(0);
+    netChart.update("none");
+  }
+
+  if (typeof cpuLineChart !== "undefined" && cpuLineChart) {
+    cpuLineChart.data.labels           = labels.slice();
+    cpuLineChart.data.datasets[0].data = Array(SEED_POINTS).fill(0);
+    cpuLineChart.update("none");
+  }
+})();
+
+/* ── Start ── */
+window.addEventListener("DOMContentLoaded", () => window.CustomRealtime.start());
+</script>
 
 <%+footer%>
