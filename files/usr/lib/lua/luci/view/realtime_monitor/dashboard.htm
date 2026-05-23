@@ -1800,6 +1800,61 @@ a.adb_widget:hover {
 }
 /* === Realtime Monitor theme-agnostic base END === */
 
+
+/* === Realtime Monitor dashboard theme tokens START === */
+#custom_status_container {
+  color: var(--rtm-text) !important;
+}
+
+#custom_status_container .status_card {
+  background: var(--rtm-surface) !important;
+  color: var(--rtm-text) !important;
+  border-color: var(--rtm-border) !important;
+  box-shadow: var(--rtm-shadow) !important;
+}
+
+#custom_status_container .status_card:hover {
+  background: var(--rtm-surface-strong) !important;
+  border-color: var(--rtm-accent) !important;
+}
+
+#custom_status_container .info_label,
+#custom_status_container .sub_stat_row,
+#custom_status_container .usage_total_label,
+#custom_status_container .usage_ck,
+#custom_status_container .mem_spark_label,
+#custom_status_container .up5_lbl,
+#custom_status_container .cl_tile_sub,
+#custom_status_container .wan_rate_meta,
+#custom_status_container .wan-unit-hint {
+  color: var(--rtm-muted) !important;
+  opacity: 1 !important;
+}
+
+#custom_status_container .info_value,
+#custom_status_container .usage_total_val,
+#custom_status_container .usage_cv,
+#custom_status_container .mem_arc_stat,
+#custom_status_container .up5_val,
+#custom_status_container .cl_tile_title,
+#custom_status_container .wan_rate_val {
+  color: var(--rtm-text) !important;
+  opacity: 1 !important;
+}
+
+#custom_status_container .rx_col,
+#custom_status_container .wan_rate_rx,
+#custom_status_container .fa-arrow-down {
+  color: var(--rtm-rx) !important;
+}
+
+#custom_status_container .tx_col,
+#custom_status_container .wan_rate_tx,
+#custom_status_container .fa-arrow-up {
+  color: var(--rtm-tx) !important;
+}
+/* === Realtime Monitor dashboard theme tokens END === */
+
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
