@@ -1,0 +1,5 @@
+_upstream_pkg/
+*.ipk
+*.tar.gz
+*.tar.xz
+*.tar.zst
