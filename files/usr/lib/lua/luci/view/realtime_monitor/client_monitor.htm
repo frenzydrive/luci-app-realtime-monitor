@@ -1333,6 +1333,53 @@
   color: #818cf8;
 }
 
+
+/* === Realtime Monitor theme-agnostic base START === */
+.rtm {
+  color-scheme: light dark;
+  --rtm-text-light: #111827;
+  --rtm-muted-light: #4b5563;
+  --rtm-border-light: rgba(15, 23, 42, 0.14);
+  --rtm-surface-light: rgba(255, 255, 255, 0.78);
+  --rtm-surface-strong-light: rgba(255, 255, 255, 0.94);
+  --rtm-shadow-light: 0 10px 26px rgba(15, 23, 42, 0.12);
+
+  --rtm-text-dark: #e5eefb;
+  --rtm-muted-dark: #cbd5e1;
+  --rtm-border-dark: rgba(148, 163, 184, 0.24);
+  --rtm-surface-dark: rgba(15, 23, 42, 0.78);
+  --rtm-surface-strong-dark: rgba(15, 23, 42, 0.92);
+  --rtm-shadow-dark: 0 12px 30px rgba(0, 0, 0, 0.28);
+
+  --rtm-text: var(--rtm-text-light);
+  --rtm-muted: var(--rtm-muted-light);
+  --rtm-border: var(--rtm-border-light);
+  --rtm-surface: var(--rtm-surface-light);
+  --rtm-surface-strong: var(--rtm-surface-strong-light);
+  --rtm-shadow: var(--rtm-shadow-light);
+
+  --rtm-rx: #4ea8ff;
+  --rtm-tx: #4cd08a;
+  --rtm-accent: #38bdf8;
+}
+
+@media (prefers-color-scheme: dark) {
+  .rtm {
+    --rtm-text: var(--rtm-text-dark);
+    --rtm-muted: var(--rtm-muted-dark);
+    --rtm-border: var(--rtm-border-dark);
+    --rtm-surface: var(--rtm-surface-dark);
+    --rtm-surface-strong: var(--rtm-surface-strong-dark);
+    --rtm-shadow: var(--rtm-shadow-dark);
+  }
+}
+
+.rtm,
+.rtm * {
+  box-sizing: border-box;
+}
+/* === Realtime Monitor theme-agnostic base END === */
+
 </style>
 </head>
 
