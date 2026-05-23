@@ -17,10 +17,10 @@
   --warning:     #f59e0b;
   --danger:      #ef4444;
   --bg:          transparent;
-  --card:        transparent;
-  --text:        #0b1220;
-  --muted:       #4b5563;
-  --line:        #e6e9ee;
+  --card:        var(--rtm-surface);
+  --text:        var(--rtm-text);
+  --muted:       var(--rtm-muted);
+  --line:        var(--rtm-border);
 
   /* Shadows */
   --shadow-sm:   0 4px 12px  rgba(var(--clr-deep), 0.06);
@@ -1400,6 +1400,62 @@
   box-sizing: border-box;
 }
 /* === Realtime Monitor theme-agnostic base END === */
+
+
+/* === Realtime Monitor client theme polish START === */
+#crm_root {
+  color: var(--rtm-text) !important;
+}
+
+#crm_root .client,
+#crm_root .band,
+#crm_root header,
+#crm_root .card,
+#crm_root .panel,
+#crm_root .box {
+  background: var(--rtm-surface) !important;
+  color: var(--rtm-text) !important;
+  border-color: var(--rtm-border) !important;
+}
+
+#crm_root .client:hover,
+#crm_root .band:hover {
+  background: var(--rtm-surface-strong) !important;
+}
+
+#crm_root .muted,
+#crm_root .hint,
+#crm_root .sub,
+#crm_root .meta,
+#crm_root .rate-stats,
+#crm_root #last {
+  color: var(--rtm-muted) !important;
+  opacity: 1 !important;
+}
+
+#crm_root .rx,
+#crm_root .rx_col,
+#crm_root .fa-arrow-down {
+  color: var(--rtm-rx) !important;
+}
+
+#crm_root .tx,
+#crm_root .tx_col,
+#crm_root .fa-arrow-up {
+  color: var(--rtm-tx) !important;
+}
+
+#loading-overlay .spinner {
+  border-color: rgba(148, 163, 184, 0.22) !important;
+  border-top-color: var(--rtm-accent) !important;
+  filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.45)) !important;
+}
+
+#loading-overlay .loading-text {
+  color: var(--rtm-text) !important;
+  font-weight: 700 !important;
+}
+/* === Realtime Monitor client theme polish END === */
 
 </style>
 
