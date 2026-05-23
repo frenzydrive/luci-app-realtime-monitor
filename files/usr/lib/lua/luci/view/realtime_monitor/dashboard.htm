@@ -1760,11 +1760,12 @@ a.adb_widget:hover {
 /* === Realtime Monitor theme-agnostic base START === */
 .rtm {
   color-scheme: light dark;
+
   --rtm-text-light: #111827;
   --rtm-muted-light: #4b5563;
   --rtm-border-light: rgba(15, 23, 42, 0.14);
-  --rtm-surface-light: rgba(255, 255, 255, 0.78);
-  --rtm-surface-strong-light: rgba(255, 255, 255, 0.94);
+  --rtm-surface-light: rgba(255, 255, 255, 0.84);
+  --rtm-surface-strong-light: rgba(255, 255, 255, 0.96);
   --rtm-shadow-light: 0 10px 26px rgba(15, 23, 42, 0.12);
 
   --rtm-text-dark: #e5eefb;
@@ -1797,27 +1798,18 @@ a.adb_widget:hover {
   }
 }
 
-.rtm,
-.rtm * {
-  box-sizing: border-box;
+.rtm[data-rtm-theme="light"] {
+  color-scheme: light;
+  --rtm-text: var(--rtm-text-light);
+  --rtm-muted: var(--rtm-muted-light);
+  --rtm-border: var(--rtm-border-light);
+  --rtm-surface: var(--rtm-surface-light);
+  --rtm-surface-strong: var(--rtm-surface-strong-light);
+  --rtm-shadow: var(--rtm-shadow-light);
 }
-/* Theme integrations: LuCI themes may not follow prefers-color-scheme */
-body[class*=dark] .rtm,
-body[class*=Dark] .rtm,
-body[class*=proton] .rtm,
-body[class*=Proton] .rtm,
-body[class*=argon] .rtm,
-body[class*=Argon] .rtm,
-html[class*=dark] .rtm,
-html[class*=Dark] .rtm,
-html[class*=proton] .rtm,
-html[class*=Proton] .rtm,
-html[class*=argon] .rtm,
-html[class*=Argon] .rtm,
-[data-theme*=dark] .rtm,
-[data-theme*=proton] .rtm,
-[data-theme*=argon] .rtm,
-[data-page*=realtime] .rtm {
+
+.rtm[data-rtm-theme="dark"] {
+  color-scheme: dark;
   --rtm-text: var(--rtm-text-dark);
   --rtm-muted: var(--rtm-muted-dark);
   --rtm-border: var(--rtm-border-dark);
@@ -1826,6 +1818,10 @@ html[class*=Argon] .rtm,
   --rtm-shadow: var(--rtm-shadow-dark);
 }
 
+.rtm,
+.rtm * {
+  box-sizing: border-box;
+}
 /* === Realtime Monitor theme-agnostic base END === */
 
 
@@ -1950,6 +1946,84 @@ html[class*=Argon] .rtm,
 /* === Realtime Monitor dashboard loading and contrast polish END === */
 
 </style>
+
+<script>
+/* === Realtime Monitor runtime theme detection START === */
+(function () {
+  function parseColor(value) {
+    var match = String(value || "").match(/rgba?\(\s*(\d+),\s*(\d+),\s*(\d+)(?:,\s*([0-9.]+))?\s*\)/i);
+    if (!match) return null;
+
+    var alpha = match[4] === undefined ? 1 : parseFloat(match[4]);
+    if (alpha <= 0.05) return null;
+
+    return {
+      r: parseInt(match[1], 10),
+      g: parseInt(match[2], 10),
+      b: parseInt(match[3], 10),
+      a: alpha
+    };
+  }
+
+  function luminance(rgb) {
+    return (0.2126 * rgb.r + 0.7152 * rgb.g + 0.0722 * rgb.b) / 255;
+  }
+
+  function firstVisibleBackground(startNode) {
+    var node = startNode;
+
+    while (node && node.nodeType === 1) {
+      var styles = window.getComputedStyle(node);
+      var bg = parseColor(styles.backgroundColor);
+
+      if (bg) {
+        return bg;
+      }
+
+      node = node.parentElement;
+    }
+
+    var bodyBg = parseColor(window.getComputedStyle(document.body).backgroundColor);
+    if (bodyBg) return bodyBg;
+
+    var htmlBg = parseColor(window.getComputedStyle(document.documentElement).backgroundColor);
+    if (htmlBg) return htmlBg;
+
+    return null;
+  }
+
+  function detectTheme(root) {
+    var bg = firstVisibleBackground(root.parentElement || root);
+
+    if (bg) {
+      return luminance(bg) < 0.5 ? "dark" : "light";
+    }
+
+    if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      return "dark";
+    }
+
+    return "light";
+  }
+
+  function applyTheme() {
+    var roots = document.querySelectorAll(".rtm");
+
+    for (var i = 0; i < roots.length; i++) {
+      roots[i].setAttribute("data-rtm-theme", detectTheme(roots[i]));
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", applyTheme);
+  } else {
+    applyTheme();
+  }
+
+  window.addEventListener("load", applyTheme);
+})();
+/* === Realtime Monitor runtime theme detection END === */
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
