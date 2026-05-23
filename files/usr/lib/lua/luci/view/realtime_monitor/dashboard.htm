@@ -1798,6 +1798,31 @@ a.adb_widget:hover {
 .rtm * {
   box-sizing: border-box;
 }
+/* Theme integrations: LuCI themes may not follow prefers-color-scheme */
+body[class*=dark] .rtm,
+body[class*=Dark] .rtm,
+body[class*=proton] .rtm,
+body[class*=Proton] .rtm,
+body[class*=argon] .rtm,
+body[class*=Argon] .rtm,
+html[class*=dark] .rtm,
+html[class*=Dark] .rtm,
+html[class*=proton] .rtm,
+html[class*=Proton] .rtm,
+html[class*=argon] .rtm,
+html[class*=Argon] .rtm,
+[data-theme*=dark] .rtm,
+[data-theme*=proton] .rtm,
+[data-theme*=argon] .rtm,
+[data-page*=realtime] .rtm {
+  --rtm-text: var(--rtm-text-dark);
+  --rtm-muted: var(--rtm-muted-dark);
+  --rtm-border: var(--rtm-border-dark);
+  --rtm-surface: var(--rtm-surface-dark);
+  --rtm-surface-strong: var(--rtm-surface-strong-dark);
+  --rtm-shadow: var(--rtm-shadow-dark);
+}
+
 /* === Realtime Monitor theme-agnostic base END === */
 
 
