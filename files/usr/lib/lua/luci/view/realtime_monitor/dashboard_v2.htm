@@ -330,6 +330,113 @@
     grid-column: span 12;
   }
 }
+
+.rtm-kv__pair {
+  display: contents;
+}
+
+.rtm-unit {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 10px 0;
+}
+
+.rtm-unit__menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 120px;
+  z-index: 50;
+  border: 1px solid var(--rtm-border);
+  border-radius: 10px;
+  background: var(--rtm-surface-strong);
+  box-shadow: var(--rtm-shadow);
+  padding: 6px;
+}
+
+.rtm-unit.is-open .rtm-unit__menu {
+  display: grid;
+  gap: 4px;
+}
+
+.rtm-unit__option {
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--rtm-text);
+  padding: 6px 8px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.rtm-unit__option:hover {
+  background: color-mix(in srgb, var(--rtm-accent) 18%, transparent);
+}
+
+.rtm-meter {
+  height: 6px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--rtm-muted) 22%, transparent);
+  margin: 10px 0;
+}
+
+.rtm-meter__fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--rtm-success), var(--rtm-accent));
+  transition: width .35s ease;
+}
+
+.rtm-section-summary,
+.rtm-muted {
+  color: var(--rtm-muted);
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+.rtm-list {
+  display: grid;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.rtm-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  margin-left: 6px;
+  background: var(--rtm-success);
+}
+
+.rtm-port-strip,
+.rtm-port-dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 8px;
+}
+
+.rtm-tooltip {
+  position: absolute;
+  z-index: 60;
+  border: 1px solid var(--rtm-border);
+  border-radius: 8px;
+  background: var(--rtm-surface-strong);
+  color: var(--rtm-text);
+  padding: 6px 8px;
+  box-shadow: var(--rtm-shadow);
+}
+
+.rtm-link {
+  color: var(--rtm-text);
+  text-decoration: none;
+}
+
 </style>
 
 <script>
@@ -384,7 +491,7 @@
 })();
 </script>
 
-<section id="rtm-dashboard" class="rtm-page rtm-dashboard" aria-label="Realtime Monitor Dashboard">
+<section id="custom_status_container" class="rtm-page rtm-dashboard" aria-label="Realtime Monitor Dashboard">
   <div id="dashboard_loading_overlay" class="rtm-loading" aria-live="polite" aria-label="Loading data">
     <div class="rtm-loading__card">
       <svg class="rtm-spinner" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
@@ -396,7 +503,7 @@
     </div>
   </div>
 
-  <header class="rtm-topbar">
+  <header id="custom_control_card" class="rtm-topbar">
     <h1 class="rtm-title">Dash<span class="rtm-title-accent">board</span></h1>
     <div>
       <div class="rtm-actions">
@@ -408,6 +515,8 @@
       </div>
     </div>
   </header>
+
+  <div id="error_banner" class="rtm-alert" hidden></div>
 
   <main class="rtm-grid">
     <section class="rtm-card rtm-card--network" aria-label="Network">
@@ -422,17 +531,32 @@
           <div class="rtm-kv__label">Public IPv4</div>
           <div class="rtm-kv__value"><span id="net_public_ip">N/A</span></div>
 
-          <div class="rtm-kv__label">Public IPv6</div>
-          <div class="rtm-kv__value"><span id="net_public_ipv6">N/A</span></div>
+          <div id="ipv6_block" class="rtm-kv__pair">
+            <div class="rtm-kv__label">Public IPv6</div>
+            <div class="rtm-kv__value"><span id="net_public_ipv6">N/A</span></div>
+          </div>
 
           <div class="rtm-kv__label">ISP</div>
           <div class="rtm-kv__value"><span id="net_isp">N/A</span></div>
 
-          <div class="rtm-kv__label" id="net_wan_uptime_label">WAN Uptime</div>
-          <div class="rtm-kv__value"><span id="net_wan_uptime">N/A</span></div>
+          <div id="wan_uptime_row" class="rtm-kv__pair">
+            <div class="rtm-kv__label" id="net_wan_uptime_label">WAN Uptime</div>
+            <div class="rtm-kv__value"><span id="net_wan_uptime">N/A</span></div>
+          </div>
         </div>
 
         <div id="wan_down_msg"></div>
+
+        <div id="wan_unit_dropdown" class="rtm-unit">
+          <button id="wan_unit_trigger" class="rtm-button" type="button" aria-haspopup="listbox" aria-expanded="false">
+            <span id="wan_unit_label">MB/s</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div id="wan_unit_menu" class="rtm-unit__menu" role="listbox" aria-label="WAN unit">
+            <button class="rtm-unit__option" type="button" data-unit="MBs">MB/s</button>
+            <button class="rtm-unit__option" type="button" data-unit="Mbps">Mbps</button>
+          </div>
+        </div>
 
         <div class="rtm-rate-row">
           <div class="rtm-rate">
@@ -468,28 +592,45 @@
           <div class="rtm-kv__value"><span id="system_uptime_control">N/A</span></div>
 
           <div class="rtm-kv__label">Adblock</div>
-          <div class="rtm-kv__value"><span id="adblock_status">N/A</span></div>
+          <div class="rtm-kv__value"><a id="adb_widget_link" href="/cgi-bin/luci/admin/services/adblock" class="rtm-link">
+              <span id="adb_status_val">N/A</span>
+              <span id="adb_domains_val" class="rtm-muted"></span>
+            </a></div>
 
           <div class="rtm-kv__label">CPU Load</div>
-          <div class="rtm-kv__value"><span id="cpuLoadText">--%</span></div>
+          <div class="rtm-kv__value"><span id="cpuPercentText">--%</span></div>
 
           <div class="rtm-kv__label">CPU Avg / Max</div>
           <div class="rtm-kv__value"><span id="cpuAvgText">--.-%</span> / <span id="cpuMaxText">--.-%</span></div>
         </div>
 
+        <div class="rtm-meter" aria-label="CPU usage">
+          <div id="cpuBarFill" class="rtm-meter__fill"></div>
+        </div>
+
+        <div class="rtm-kv" style="margin-top: 10px;">
+          <div class="rtm-kv__label">CPU Temperature</div>
+          <div class="rtm-kv__value"><span id="cpuTempBadge" class="rtm-badge">-- °C</span></div>
+        </div>
+
         <div class="rtm-chart-box">
-          <canvas id="cpuChart" height="140"></canvas>
+          <canvas id="cpuCoreChart" height="80"></canvas>
+        </div>
+
+        <div class="rtm-chart-box">
+          <canvas id="cpuLineChart" height="140"></canvas>
         </div>
 
         <div class="rtm-kv" style="margin-top: 10px;">
           <div class="rtm-kv__label">Memory</div>
-          <div class="rtm-kv__value"><span id="mem_arc_pct">--%</span></div>
+          <div class="rtm-kv__value"><span id="mem_arc_pct">--%</span><span id="mem_arc_fill" hidden></span></div>
           <div class="rtm-kv__label">Used / Free</div>
-          <div class="rtm-kv__value"><span id="custom_mem">N/A</span> / <span id="mem_free_text">N/A</span></div>
+          <div class="rtm-kv__value"><span id="custom_mem">N/A</span> / <span id="mem_free_text">N/A</span><span id="mem_bar" hidden></span></div>
         </div>
 
         <div class="rtm-chart-box">
-          <canvas id="memSparkline" height="80"></canvas>
+          <canvas id="mem_sparkline" height="80"></canvas>
+          <div id="mem_spark_tooltip" class="rtm-tooltip" hidden></div>
         </div>
       </div>
     </section>
@@ -510,7 +651,22 @@
           <div class="rtm-kv__value"><span id="wifi_temp">-- °C</span></div>
         </div>
 
-        <div id="clients_summary"></div>
+        <div id="custom_wifi_total" class="rtm-section-summary"></div>
+        <div id="custom_wifi_ap_list" class="rtm-list"></div>
+
+        <div class="rtm-kv" style="margin-top: 10px;">
+          <div class="rtm-kv__label">Wi-Fi Temperature</div>
+          <div class="rtm-kv__value">
+            <span id="custom_wifi_temp">-- °C</span>
+            <span id="wifi_temp_dot" class="rtm-dot"></span>
+          </div>
+        </div>
+        <div id="wifi_temp_foot" class="rtm-muted"></div>
+
+        <div id="custom_lan_total" class="rtm-section-summary"></div>
+        <div id="custom_lan_ports" class="rtm-list"></div>
+        <div id="custom_lan_port_strip" class="rtm-port-strip"></div>
+        <div id="custom_lan_port_dots" class="rtm-port-dots"></div>
       </div>
     </section>
 
@@ -519,20 +675,30 @@
         <h2 class="rtm-card__title"><i class="fas fa-chart-line"></i> Usage</h2>
       </div>
       <div class="rtm-card__body">
-        <div id="vnstat_warn"></div>
+        <div id="vnstat_warning"></div>
 
-        <div class="rtm-kv">
-          <div class="rtm-kv__label">Today</div>
-          <div class="rtm-kv__value"><span id="vn_daily_total">N/A</span></div>
+        <div id="vn_iface_dropdown" class="rtm-unit">
+          <button id="vn_iface_trigger" class="rtm-button" type="button" aria-haspopup="listbox" aria-expanded="false">
+            <span id="vn_iface_label">Interface</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div id="vn_iface_menu" class="rtm-unit__menu" role="listbox" aria-label="vnStat interface"></div>
+        </div>
 
-          <div class="rtm-kv__label">Monthly</div>
-          <div class="rtm-kv__value"><span id="vn_monthly_total">N/A</span></div>
+        <div id="vnstat_content">
+          <div class="rtm-kv">
+            <div id="vn_daily_header" class="rtm-kv__label">Today</div>
+            <div class="rtm-kv__value"><span id="vn_daily_total">N/A</span></div>
 
-          <div class="rtm-kv__label">Today Download / Upload</div>
-          <div class="rtm-kv__value"><span id="vn_daily_rx">N/A</span> / <span id="vn_daily_tx">N/A</span></div>
+            <div id="vn_monthly_header" class="rtm-kv__label">Monthly</div>
+            <div class="rtm-kv__value"><span id="vn_monthly_total">N/A</span></div>
 
-          <div class="rtm-kv__label">Monthly Download / Upload</div>
-          <div class="rtm-kv__value"><span id="vn_monthly_rx">N/A</span> / <span id="vn_monthly_tx">N/A</span></div>
+            <div class="rtm-kv__label">Today Download / Upload</div>
+            <div class="rtm-kv__value"><span id="vn_daily_rx">N/A</span> / <span id="vn_daily_tx">N/A</span></div>
+
+            <div class="rtm-kv__label">Monthly Download / Upload</div>
+            <div class="rtm-kv__value"><span id="vn_monthly_rx">N/A</span> / <span id="vn_monthly_tx">N/A</span></div>
+          </div>
         </div>
 
         <div style="margin-top: 12px;">
