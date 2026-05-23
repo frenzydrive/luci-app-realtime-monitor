@@ -1880,6 +1880,72 @@ html[class*=Argon] .rtm,
 }
 /* === Realtime Monitor dashboard theme tokens END === */
 
+
+/* === Realtime Monitor dashboard loading and contrast polish START === */
+#custom_status_container .dlo_inner {
+  background: var(--rtm-surface-strong) !important;
+  color: var(--rtm-text) !important;
+  border: 1px solid color-mix(in srgb, var(--rtm-accent) 40%, var(--rtm-border)) !important;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45) !important;
+  border-radius: 18px !important;
+}
+
+#custom_status_container .dlo_label {
+  color: var(--rtm-text) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+}
+
+#custom_status_container .dlo_spinner {
+  width: 44px !important;
+  height: 44px !important;
+  opacity: 1 !important;
+  filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.45)) !important;
+}
+
+#custom_status_container .dlo_spinner .dlo_track {
+  stroke: rgba(148, 163, 184, 0.28) !important;
+}
+
+#custom_status_container .dlo_spinner .dlo_arc {
+  stroke: var(--rtm-accent) !important;
+  stroke-width: 4 !important;
+  stroke-linecap: round !important;
+}
+
+#custom_status_container .cpu_core_label,
+#custom_status_container .cpu_core_val,
+#custom_status_container .chartjs-render-monitor,
+#custom_status_container .cl_ap_name,
+#custom_status_container .cl_ap_meta,
+#custom_status_container .cl_port_name,
+#custom_status_container .cl_port_meta,
+#custom_status_container .cl_temp_foot,
+#custom_status_container .mem_arc_pct,
+#custom_status_container .mem_spark_tooltip,
+#custom_status_container .wan-unit-trigger,
+#custom_status_container .wan-unit-option {
+  color: var(--rtm-text) !important;
+  opacity: 1 !important;
+}
+
+#custom_status_container .cl_ap_meta,
+#custom_status_container .cl_port_meta,
+#custom_status_container .cl_temp_foot,
+#custom_status_container .cpu_core_label {
+  color: var(--rtm-muted) !important;
+}
+
+#custom_status_container .mem_arc_row {
+  min-height: 92px !important;
+  align-items: center !important;
+}
+
+#custom_status_container .mem_spark_outer {
+  min-height: 46px !important;
+}
+/* === Realtime Monitor dashboard loading and contrast polish END === */
+
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
