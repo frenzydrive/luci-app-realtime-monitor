@@ -586,6 +586,824 @@
 }
 /* === Realtime Monitor v2 compact visual polish END === */
 
+
+/* === Realtime Monitor v2 clients card polish START === */
+.rtm-card--clients .rtm-card__body {
+  display: grid;
+  gap: 10px;
+}
+
+.rtm-card--clients .rtm-kv {
+  gap: 7px 12px;
+}
+
+.rtm-card--clients .rtm-kv__label,
+.rtm-card--clients .rtm-kv__value {
+  line-height: 1.25;
+}
+
+#custom_wifi_total,
+#custom_lan_total {
+  display: none !important;
+}
+
+#custom_wifi_ap_list,
+#custom_lan_ports {
+  display: grid !important;
+  gap: 7px !important;
+  margin-top: 2px !important;
+}
+
+#custom_wifi_ap_list > *,
+#custom_lan_ports > * {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  min-height: 32px !important;
+  padding: 7px 9px !important;
+  border: 1px solid color-mix(in srgb, var(--rtm-border) 65%, transparent) !important;
+  border-radius: 10px !important;
+  background: color-mix(in srgb, var(--rtm-surface-strong) 38%, transparent) !important;
+  color: var(--rtm-text) !important;
+  overflow: hidden !important;
+}
+
+#custom_wifi_ap_list > * > *,
+#custom_lan_ports > * > * {
+  min-width: 0 !important;
+}
+
+#custom_wifi_ap_list span,
+#custom_wifi_ap_list div,
+#custom_lan_ports span,
+#custom_lan_ports div {
+  line-height: 1.2 !important;
+}
+
+#custom_wifi_ap_list .cl_ap_name,
+#custom_lan_ports .cl_port_name {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  min-width: 0 !important;
+  max-width: 68% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  color: var(--rtm-text) !important;
+  font-weight: 700 !important;
+}
+
+#custom_wifi_ap_list .cl_ap_meta,
+#custom_lan_ports .cl_port_meta {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 6px !important;
+  min-width: max-content !important;
+  color: var(--rtm-muted) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  white-space: nowrap !important;
+}
+
+#custom_wifi_ap_list .badge,
+#custom_lan_ports .badge,
+#custom_wifi_ap_list [class*=badge],
+#custom_lan_ports [class*=badge] {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 22px !important;
+  min-height: 18px !important;
+  padding: 2px 6px !important;
+  border-radius: 999px !important;
+  border: 1px solid var(--rtm-border) !important;
+  background: color-mix(in srgb, var(--rtm-accent) 16%, transparent) !important;
+  color: var(--rtm-text) !important;
+  font-size: 11px !important;
+}
+
+.rtm-card--clients i,
+#custom_wifi_ap_list i,
+#custom_lan_ports i {
+  margin-right: 6px !important;
+  color: var(--rtm-accent) !important;
+}
+
+#custom_lan_port_strip,
+#custom_lan_port_dots {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 6px !important;
+  margin-top: 4px !important;
+}
+
+#custom_lan_port_strip > *,
+#custom_lan_port_dots > * {
+  width: 11px !important;
+  height: 11px !important;
+  border-radius: 3px !important;
+  border: 1px solid color-mix(in srgb, var(--rtm-border) 80%, transparent) !important;
+}
+
+#wifi_temp_foot {
+  display: none !important;
+}
+/* === Realtime Monitor v2 clients card polish END === */
+
+
+/* === Realtime Monitor v2 LAN client count label START === */
+#custom_lan_ports [title*=client],
+#custom_lan_ports [title*=Client],
+#custom_lan_ports [title*=clients],
+#custom_lan_ports [title*=Clients] {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  color: var(--rtm-muted) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  white-space: nowrap !important;
+}
+
+#custom_lan_ports [title*=client]::before,
+#custom_lan_ports [title*=Client]::before,
+#custom_lan_ports [title*=clients]::before,
+#custom_lan_ports [title*=Clients]::before {
+  content: "\\f0c0";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  color: var(--rtm-accent);
+  font-size: 11px;
+}
+
+#custom_lan_ports [title*=client]::after,
+#custom_lan_ports [title*=Client]::after,
+#custom_lan_ports [title*=clients]::after,
+#custom_lan_ports [title*=Clients]::after {
+  content: " clients";
+  color: var(--rtm-muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+/* === Realtime Monitor v2 LAN client count label END === */
+
+
+/* === Realtime Monitor v2 LuCI theme spacing START === */
+.rtm-page {
+  margin-top: 28px !important;
+}
+
+@media (max-width: 900px) {
+  .rtm-page {
+    margin-top: 12px !important;
+  }
+}
+/* === Realtime Monitor v2 LuCI theme spacing END === */
+
+
+/* === Realtime Monitor v2 LAN port client count polish START === */
+#custom_lan_ports .cl_lan_row {
+  display: grid !important;
+  grid-template-columns: minmax(58px, auto) auto 1fr auto auto !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+#custom_lan_ports .lan_name {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  min-width: 0 !important;
+  font-weight: 700 !important;
+}
+
+#custom_lan_ports .cl_lan_spacer {
+  min-width: 0 !important;
+}
+
+#custom_lan_ports .cl_mac_count {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  min-width: max-content !important;
+  padding: 2px 7px !important;
+  border: 1px solid color-mix(in srgb, var(--rtm-accent) 38%, var(--rtm-border)) !important;
+  border-radius: 999px !important;
+  background: color-mix(in srgb, var(--rtm-accent) 14%, transparent) !important;
+  color: var(--rtm-text) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  white-space: nowrap !important;
+}
+
+#custom_lan_ports .cl_mac_count::before {
+  content: "👥";
+  font-size: 11px;
+  line-height: 1;
+}
+
+#custom_lan_ports .cl_mac_count::after {
+  content: " clients";
+  color: var(--rtm-muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+#custom_lan_ports .cl_speed {
+  min-width: max-content !important;
+  font-weight: 800 !important;
+}
+/* === Realtime Monitor v2 LAN port client count polish END === */
+
+
+
+
+/* === Realtime Monitor v2 hide redundant legacy port dots START === */
+#custom_lan_port_strip,
+#custom_lan_port_dots {
+  display: none !important;
+}
+/* === Realtime Monitor v2 hide redundant legacy port dots END === */
+
+
+/* === Realtime Monitor v2 page spacing START === */
+.rtm-page {
+  margin-top: 12px !important;
+}
+
+@media (max-width: 900px) {
+  .rtm-page {
+    margin-top: 8px !important;
+  }
+}
+/* === Realtime Monitor v2 page spacing END === */
+
+
+/* === Realtime Monitor v2 chart width polish START === */
+.rtm-card--system .rtm-chart-box,
+.rtm-card--system .cpu_merged_chart,
+.rtm-card--system .cpu-core-canvas-wrap,
+.rtm-card--system .mem_spark_outer {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.rtm-card--system canvas,
+#cpuLineChart,
+#cpuCoreChart,
+#mem_sparkline {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.rtm-card--system .cpu_merged_chart canvas,
+.rtm-card--system .cpu-core-canvas-wrap canvas,
+.rtm-card--system .mem_spark_outer canvas {
+  min-width: 100% !important;
+}
+/* === Realtime Monitor v2 chart width polish END === */
+
+
+
+
+/* === Realtime Monitor v2 final page offset START === */
+.rtm-page {
+  margin-top: 28px !important;
+}
+
+@media (max-width: 900px) {
+  .rtm-page {
+    margin-top: 14px !important;
+  }
+}
+/* === Realtime Monitor v2 final page offset END === */
+
+
+/* === Realtime Monitor v2 final page offset START === */
+.rtm-page {
+  margin-top: 28px !important;
+}
+
+@media (max-width: 900px) {
+  .rtm-page {
+    margin-top: 14px !important;
+  }
+}
+/* === Realtime Monitor v2 final page offset END === */
+
+
+
+
+
+
+
+
+/* === Realtime Monitor v2 block settings modal CSS START === */
+
+.rtm-block-hidden {
+  display: none !important;
+}
+
+/* Only spacing, sizes are synced by JS */
+.rtm-topbar__actions,
+.rtm-actions {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 8px !important;
+}
+
+.rtm-topbar__actions > *,
+.rtm-actions > * {
+  margin: 0 !important;
+}
+
+/* Gear button base. Do NOT hardcode size here. JS will copy refresh size with !important. */
+#rtm_settings_button.rtm-settings-button {
+  box-sizing: border-box !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 1px solid var(--rtm-border) !important;
+  border-radius: 10px !important;
+  background: var(--rtm-surface-strong) !important;
+  color: var(--rtm-text) !important;
+  line-height: 1 !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+}
+
+#rtm_settings_button.rtm-settings-button:hover {
+  color: var(--rtm-accent) !important;
+  border-color: color-mix(in srgb, var(--rtm-accent) 48%, var(--rtm-border)) !important;
+  background: color-mix(in srgb, var(--rtm-accent) 8%, var(--rtm-surface-strong)) !important;
+}
+
+/* Backdrop exactly like loading overlay idea */
+.rtm-settings-backdrop {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 9998 !important;
+  display: none !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 20px !important;
+  background: rgba(0, 0, 0, 0.30) !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+}
+
+.rtm-settings-backdrop.is-open {
+  display: flex !important;
+}
+
+/* Copied from loading popup style, adapted for settings content */
+.rtm-settings-modal {
+  box-sizing: border-box !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 18px !important;
+
+  width: min(380px, calc(100vw - 36px)) !important;
+  max-width: min(380px, calc(100vw - 36px)) !important;
+
+  padding: 40px 50px !important;
+  border-radius: 24px !important;
+
+  background: rgba(255, 255, 255, 0.04) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+
+  border: 1px solid rgba(56, 189, 248, 0.55) !important;
+  outline: 1px solid rgba(255, 255, 255, 0.06) !important;
+  outline-offset: -2px !important;
+
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.40),
+    0 0 24px rgba(56, 189, 248, 0.18) !important;
+
+  color: rgba(255, 255, 255, 0.90) !important;
+  overflow: visible !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+
+  animation: rtmSettingsPopIn .18s ease-out both !important;
+}
+
+@keyframes rtmSettingsPopIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.rtm-settings-modal__header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 14px !important;
+
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+
+  color: rgba(255, 255, 255, 0.94) !important;
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  letter-spacing: .01em !important;
+}
+
+.rtm-settings-modal__title {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 9px !important;
+  white-space: nowrap !important;
+}
+
+.rtm-settings-modal__title i {
+  color: #38bdf8 !important;
+}
+
+.rtm-settings-modal__close {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: transparent !important;
+
+  color: rgba(255, 255, 255, 0.70) !important;
+  cursor: pointer !important;
+  font-size: 16px !important;
+  line-height: 1 !important;
+}
+
+.rtm-settings-modal__close:hover {
+  color: #ffffff !important;
+  background: rgba(255,255,255,.08) !important;
+}
+
+.rtm-settings-modal__body {
+  width: 100% !important;
+  display: grid !important;
+  gap: 12px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.rtm-settings-check {
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: 1fr auto !important;
+  align-items: center !important;
+  gap: 14px !important;
+
+  min-height: 30px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  cursor: pointer !important;
+}
+
+.rtm-settings-check span {
+  color: rgba(255, 255, 255, 0.90) !important;
+  font-weight: 700 !important;
+  white-space: nowrap !important;
+}
+
+.rtm-settings-check input {
+  width: 17px !important;
+  height: 17px !important;
+  min-width: 17px !important;
+  min-height: 17px !important;
+  margin: 0 !important;
+  accent-color: #38bdf8 !important;
+  cursor: pointer !important;
+}
+
+.rtm-settings-note {
+  margin: 4px 0 0 0 !important;
+  padding: 0 !important;
+  color: rgba(255, 255, 255, 0.70) !important;
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+}
+
+/* Light version, same geometry */
+.theme-light .rtm-settings-modal,
+.rtm-page.theme-light ~ .rtm-settings-backdrop .rtm-settings-modal {
+  background: rgba(255, 255, 255, 0.88) !important;
+  color: #111827 !important;
+  border-color: rgba(56, 189, 248, 0.55) !important;
+  outline-color: rgba(255, 255, 255, 0.70) !important;
+  box-shadow:
+    0 18px 42px rgba(15, 23, 42, 0.22),
+    0 0 24px rgba(56, 189, 248, 0.14) !important;
+}
+
+.theme-light .rtm-settings-modal__header,
+.theme-light .rtm-settings-check span,
+.rtm-page.theme-light ~ .rtm-settings-backdrop .rtm-settings-modal__header,
+.rtm-page.theme-light ~ .rtm-settings-backdrop .rtm-settings-check span {
+  color: #111827 !important;
+}
+
+.theme-light .rtm-settings-note,
+.rtm-page.theme-light ~ .rtm-settings-backdrop .rtm-settings-note {
+  color: #4b5563 !important;
+}
+
+.theme-light .rtm-settings-modal__close,
+.rtm-page.theme-light ~ .rtm-settings-backdrop .rtm-settings-modal__close {
+  color: #4b5563 !important;
+}
+
+@media (max-width: 640px) {
+  .rtm-settings-modal {
+    width: min(340px, calc(100vw - 28px)) !important;
+    max-width: min(340px, calc(100vw - 28px)) !important;
+    padding: 32px 34px !important;
+  }
+}
+/* === Realtime Monitor v2 block settings modal CSS END === */
+
+
+/* === Realtime Monitor v2 settings modal visibility/button fix START === */
+
+/* Make gear visually match refresh button */
+#rtm_settings_button.rtm-settings-button {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 10px !important;
+  font-size: 15px !important;
+}
+
+#rtm_settings_button.rtm-settings-button i {
+  font-size: 15px !important;
+  line-height: 1 !important;
+}
+
+/* The backdrop was visible, but modal could remain opacity:0 because of !important */
+.rtm-settings-backdrop.is-open .rtm-settings-modal {
+  opacity: 1 !important;
+  transform: translateY(0) scale(1) !important;
+  display: block !important;
+  visibility: visible !important;
+}
+
+/* Keep the glass card close to loading overlay style */
+.rtm-settings-modal {
+  min-height: auto !important;
+  padding: 0 !important;
+}
+
+/* Slightly stronger border so the popup reads as a real window */
+.rtm-settings-backdrop.is-open .rtm-settings-modal {
+  border: 1px solid color-mix(in srgb, var(--rtm-accent) 48%, var(--rtm-border)) !important;
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.46),
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+    0 0 26px color-mix(in srgb, var(--rtm-accent) 20%, transparent) !important;
+}
+
+/* === Realtime Monitor v2 settings modal visibility/button fix END === */
+
+
+/* === Realtime Monitor v2 settings modal FINAL loading-style override START === */
+#rtm_settings_backdrop.rtm-settings-backdrop {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 9998 !important;
+  display: none !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 20px !important;
+  background: rgba(0, 0, 0, 0.34) !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+}
+
+#rtm_settings_backdrop.rtm-settings-backdrop.is-open {
+  display: flex !important;
+}
+
+#rtm_settings_backdrop .rtm-settings-modal {
+  box-sizing: content-box !important;
+
+  width: 260px !important;
+  min-width: 260px !important;
+  max-width: 260px !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: center !important;
+  gap: 18px !important;
+
+  padding: 40px 50px !important;
+  margin: 0 !important;
+
+  border-radius: 24px !important;
+  border: 1px solid rgba(56, 189, 248, 0.72) !important;
+  outline: 1px solid rgba(255, 255, 255, 0.08) !important;
+  outline-offset: -2px !important;
+
+  background: rgba(15, 23, 42, 0.88) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.42),
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+    0 0 28px rgba(56, 189, 248, 0.18) !important;
+
+  color: rgba(255, 255, 255, 0.92) !important;
+  overflow: visible !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+}
+
+#rtm_settings_backdrop .rtm-settings-modal__header {
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+
+  color: rgba(255, 255, 255, 0.94) !important;
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  line-height: 1.2 !important;
+}
+
+#rtm_settings_backdrop .rtm-settings-modal__title {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 9px !important;
+  white-space: nowrap !important;
+  min-width: 0 !important;
+}
+
+#rtm_settings_backdrop .rtm-settings-modal__title i {
+  color: #38bdf8 !important;
+}
+
+#rtm_settings_backdrop .rtm-settings-modal__close {
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: transparent !important;
+
+  color: rgba(255, 255, 255, 0.72) !important;
+  cursor: pointer !important;
+  font-size: 16px !important;
+  line-height: 1 !important;
+}
+
+#rtm_settings_backdrop .rtm-settings-modal__close:hover {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+#rtm_settings_backdrop .rtm-settings-modal__body {
+  width: 100% !important;
+  display: grid !important;
+  gap: 12px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+}
+
+#rtm_settings_backdrop .rtm-settings-check {
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: 1fr auto !important;
+  align-items: center !important;
+  gap: 14px !important;
+
+  min-height: 30px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+}
+
+#rtm_settings_backdrop .rtm-settings-check span {
+  color: rgba(255, 255, 255, 0.92) !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+  white-space: nowrap !important;
+}
+
+#rtm_settings_backdrop .rtm-settings-check input {
+  width: 17px !important;
+  height: 17px !important;
+  min-width: 17px !important;
+  min-height: 17px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  accent-color: #38bdf8 !important;
+  cursor: pointer !important;
+}
+
+#rtm_settings_backdrop .rtm-settings-note {
+  margin: 4px 0 0 0 !important;
+  padding: 0 !important;
+  color: rgba(255, 255, 255, 0.70) !important;
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+}
+
+/* light theme variant */
+.theme-light #rtm_settings_backdrop .rtm-settings-modal,
+#rtm_settings_backdrop .rtm-settings-modal {
+}
+
+.theme-light #rtm_settings_backdrop .rtm-settings-modal {
+  background: rgba(255, 255, 255, 0.88) !important;
+  border-color: rgba(56, 189, 248, 0.70) !important;
+  outline-color: rgba(255, 255, 255, 0.70) !important;
+  color: #111827 !important;
+  box-shadow:
+    0 18px 42px rgba(15, 23, 42, 0.22),
+    0 0 0 1px rgba(255,255,255,0.60) inset,
+    0 0 24px rgba(56, 189, 248, 0.15) !important;
+}
+
+.theme-light #rtm_settings_backdrop .rtm-settings-modal__header,
+.theme-light #rtm_settings_backdrop .rtm-settings-check span {
+  color: #111827 !important;
+}
+
+.theme-light #rtm_settings_backdrop .rtm-settings-note {
+  color: #4b5563 !important;
+}
+
+.theme-light #rtm_settings_backdrop .rtm-settings-modal__close {
+  color: #4b5563 !important;
+}
+
+@media (max-width: 640px) {
+  #rtm_settings_backdrop .rtm-settings-modal {
+    box-sizing: border-box !important;
+    width: min(340px, calc(100vw - 28px)) !important;
+    min-width: 0 !important;
+    max-width: min(340px, calc(100vw - 28px)) !important;
+    padding: 32px 34px !important;
+  }
+}
+/* === Realtime Monitor v2 settings modal FINAL loading-style override END === */
+
 </style>
 
 <script>
@@ -652,7 +1470,7 @@
     </div>
   </div>
 
-  <header id="custom_control_card" class="rtm-topbar">
+  <div id="custom_control_card" class="rtm-topbar" role="banner">
     <h1 class="rtm-title">Dash<span class="rtm-title-accent">board</span></h1>
     <div>
       <div class="rtm-actions">
@@ -663,7 +1481,7 @@
         <span class="rtm-badge"><span id="current_time">--:--:--</span><span id="tile_ampm">--</span></span>
       </div>
     </div>
-  </header>
+  </div>
 
   <div id="error_banner" class="rtm-alert" hidden></div>
 
@@ -737,10 +1555,13 @@
       </div>
       <div class="rtm-card__body">
         <div class="rtm-kv">
-          <div class="rtm-kv__label">Wireless</div>
+          <div class="rtm-kv__label">Wi-Fi clients</div>
           <div class="rtm-kv__value"><span id="wifi_clients_count">0</span></div>
 
-          <div class="rtm-kv__label">LAN</div>
+          <div class="rtm-kv__label">LAN clients</div>
+          <div class="rtm-kv__value"><span id="lan_devices_count">0</span></div>
+
+          <div class="rtm-kv__label">LAN ports</div>
           <div class="rtm-kv__value"><span id="lan_clients_count">0</span></div>
 
           <div class="rtm-kv__label">Wireless Controller Temperature</div>
@@ -812,7 +1633,6 @@
 
         <div class="rtm-chart-box mem_spark_outer">
           <canvas id="mem_sparkline" height="80"></canvas>
-          <div id="mem_spark_tooltip" class="rtm-tooltip" hidden></div>
         </div>
       </div>
     </section>
@@ -859,45 +1679,323 @@
 </section>
 
 
+
+
 <script>
-/* === Realtime Monitor v2 tooltip position shim START === */
+</script>
+
+
+<script>
+/* === Realtime Monitor v2 chart resize shim START === */
 (function () {
-  function clamp(value, min, max) {
-    return Math.max(min, Math.min(max, value));
+  function resizeCharts() {
+    ["netChart", "cpuLineChart", "cpuCoreChart"].forEach(function (name) {
+      var chart = window[name];
+      if (chart && typeof chart.resize === "function") {
+        chart.resize();
+        chart.update("none");
+      }
+    });
+
+    window.dispatchEvent(new Event("resize"));
   }
 
-  function setupMemoryTooltipShim() {
-    var canvas = document.getElementById("mem_sparkline");
-    var tooltip = document.getElementById("mem_spark_tooltip");
-    var wrap = canvas && canvas.closest(".mem_spark_outer");
+  window.addEventListener("load", function () {
+    setTimeout(resizeCharts, 100);
+    setTimeout(resizeCharts, 600);
+    setTimeout(resizeCharts, 1500);
+  });
 
-    if (!canvas || !tooltip || !wrap) return;
+  window.addEventListener("resize", function () {
+    setTimeout(resizeCharts, 120);
+  });
+})();
+/* === Realtime Monitor v2 chart resize shim END === */
+</script>
 
-    canvas.addEventListener("mousemove", function (event) {
-      var wrapRect = wrap.getBoundingClientRect();
-      var canvasRect = canvas.getBoundingClientRect();
 
-      var x = event.clientX - wrapRect.left;
-      var y = canvasRect.top - wrapRect.top + 4;
 
-      x = clamp(x, 16, wrapRect.width - 16);
 
-      tooltip.style.left = x + "px";
-      tooltip.style.top = y + "px";
+
+
+
+
+
+
+
+
+<script>
+/* === Realtime Monitor v2 clients summary sync START === */
+(function () {
+  function syncText(targetId, sourceId, fallback) {
+    var target = document.getElementById(targetId);
+    var source = document.getElementById(sourceId);
+
+    if (!target) return;
+
+    var value = source ? (source.textContent || "").trim() : "";
+    target.textContent = value || fallback || "0";
+  }
+
+  function countDevicesBehindApSwitch() {
+    var counts = document.querySelectorAll("#custom_lan_ports .cl_mac_count");
+    var total = 0;
+
+    counts.forEach(function (countEl) {
+      var raw = countEl.getAttribute("data-raw-count") || countEl.textContent || "";
+      var count = parseInt(raw.replace(/[^0-9]/g, ""), 10);
+
+      if (!isNaN(count) && count > 0) {
+        total += count;
+      }
     });
 
-    canvas.addEventListener("mouseleave", function () {
-      tooltip.hidden = true;
-    });
+    return total;
+  }
+
+  function syncClientsSummary() {
+    syncText("wifi_clients_count", "custom_wifi_total", "0");
+    syncText("lan_clients_count", "custom_lan_total", "0");
+    syncText("wifi_temp", "custom_wifi_temp", "-- °C");
+
+    var behind = document.getElementById("lan_devices_count");
+    if (behind) {
+      behind.textContent = String(countDevicesBehindApSwitch());
+    }
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", setupMemoryTooltipShim);
+    document.addEventListener("DOMContentLoaded", syncClientsSummary);
   } else {
-    setupMemoryTooltipShim();
+    syncClientsSummary();
+  }
+
+  window.addEventListener("load", syncClientsSummary);
+  window.setInterval(syncClientsSummary, 1000);
+})();
+/* === Realtime Monitor v2 clients summary sync END === */
+</script>
+
+
+<script>
+/* === Realtime Monitor v2 block settings modal JS START === */
+(function () {
+  var STORAGE_KEY = "luci-app-realtime-monitor.visibleBlocks.v1";
+
+  var BLOCKS = [
+    { key: "network", label: "Network", selector: ".rtm-card--network" },
+    { key: "system",  label: "CPU / Memory", selector: ".rtm-card--system" },
+    { key: "clients", label: "Clients", selector: ".rtm-card--clients" },
+    { key: "usage",   label: "Usage", selector: ".rtm-card--usage" }
+  ];
+
+  function defaultState() {
+    var state = {};
+    BLOCKS.forEach(function (block) {
+      state[block.key] = true;
+    });
+    return state;
+  }
+
+  function loadState() {
+    try {
+      var raw = window.localStorage.getItem(STORAGE_KEY);
+      if (!raw) return defaultState();
+
+      var parsed = JSON.parse(raw);
+      var state = defaultState();
+
+      BLOCKS.forEach(function (block) {
+        if (typeof parsed[block.key] === "boolean") {
+          state[block.key] = parsed[block.key];
+        }
+      });
+
+      return state;
+    } catch (e) {
+      return defaultState();
+    }
+  }
+
+  function saveState(state) {
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (e) {}
+  }
+
+  function applyState(state) {
+    BLOCKS.forEach(function (block) {
+      document.querySelectorAll(block.selector).forEach(function (el) {
+        el.classList.toggle("rtm-block-hidden", state[block.key] === false);
+      });
+    });
+  }
+
+  function ensureModal(state) {
+    var existing = document.getElementById("rtm_settings_backdrop");
+    if (existing) return existing;
+
+    var backdrop = document.createElement("div");
+    backdrop.id = "rtm_settings_backdrop";
+    backdrop.className = "rtm-settings-backdrop";
+
+    backdrop.innerHTML =
+      '<div class="rtm-settings-modal" role="dialog" aria-modal="true" aria-label="Dashboard block visibility">' +
+        '<div class="rtm-settings-modal__header">' +
+          '<span class="rtm-settings-modal__title"><i class="fas fa-gear"></i> Dashboard blocks</span>' +
+          '<button type="button" class="rtm-settings-modal__close" aria-label="Close">×</button>' +
+        '</div>' +
+        '<div class="rtm-settings-modal__body">' +
+          BLOCKS.map(function (block) {
+            return '<label class="rtm-settings-check">' +
+              '<span>' + block.label + '</span>' +
+              '<input type="checkbox" data-rtm-block="' + block.key + '"' + (state[block.key] ? " checked" : "") + '>' +
+            '</label>';
+          }).join("") +
+          '<div class="rtm-settings-note">Saved in this browser. Router reboot will not reset these choices.</div>' +
+        '</div>' +
+      '</div>';
+
+    backdrop.addEventListener("click", function (event) {
+      if (event.target === backdrop) {
+        backdrop.classList.remove("is-open");
+      }
+    });
+
+    var closeBtn = backdrop.querySelector(".rtm-settings-modal__close");
+    if (closeBtn) {
+      closeBtn.addEventListener("click", function () {
+        backdrop.classList.remove("is-open");
+      });
+    }
+
+    backdrop.querySelectorAll("input[data-rtm-block]").forEach(function (input) {
+      input.addEventListener("change", function () {
+        var key = input.getAttribute("data-rtm-block");
+        state[key] = input.checked;
+        saveState(state);
+        applyState(state);
+      });
+    });
+
+    document.body.appendChild(backdrop);
+    return backdrop;
+  }
+
+  function addSettingsButton(backdrop) {
+    if (document.getElementById("rtm_settings_button")) return;
+
+    var topbar = document.querySelector(".rtm-topbar");
+    if (!topbar) return;
+
+    var actions =
+      topbar.querySelector(".rtm-actions") ||
+      topbar.querySelector(".rtm-topbar__actions") ||
+      topbar;
+
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.id = "rtm_settings_button";
+    btn.className = "rtm-settings-button";
+    btn.title = "Dashboard block settings";
+    btn.setAttribute("aria-label", "Dashboard block settings");
+    btn.innerHTML = '<i class="fas fa-gear"></i>';
+
+    btn.addEventListener("click", function () {
+      backdrop.classList.add("is-open");
+    });
+
+    actions.insertBefore(btn, actions.firstChild);
+  }
+
+  function initBlockSettings() {
+    var state = loadState();
+    applyState(state);
+
+    var backdrop = ensureModal(state);
+    addSettingsButton(backdrop);
+
+    // Re-apply because realtime code can touch DOM repeatedly.
+    window.setInterval(function () {
+      applyState(state);
+      if (!document.getElementById("rtm_settings_button")) {
+        addSettingsButton(backdrop);
+      }
+    }, 1000);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initBlockSettings);
+  } else {
+    initBlockSettings();
   }
 })();
-/* === Realtime Monitor v2 tooltip position shim END === */
+/* === Realtime Monitor v2 block settings modal JS END === */
+</script>
+
+
+
+
+<script>
+/* === Realtime Monitor v2 topbar button size sync START === */
+(function () {
+  function setImportant(el, prop, value) {
+    el.style.setProperty(prop, value, "important");
+  }
+
+  function syncSettingsButtonSize() {
+    var gear = document.getElementById("rtm_settings_button");
+    if (!gear) return;
+
+    var topbar = document.querySelector(".rtm-topbar");
+    if (!topbar) return;
+
+    var reference = Array.prototype.slice.call(topbar.querySelectorAll("button"))
+      .find(function (btn) {
+        return btn.id !== "rtm_settings_button" && btn.offsetWidth > 0 && btn.offsetHeight > 0;
+      });
+
+    if (!reference) return;
+
+    var rect = reference.getBoundingClientRect();
+    var style = window.getComputedStyle(reference);
+
+    var w = Math.round(rect.width);
+    var h = Math.round(rect.height);
+
+    if (w < 20 || h < 20) return;
+
+    setImportant(gear, "width", w + "px");
+    setImportant(gear, "height", h + "px");
+    setImportant(gear, "min-width", w + "px");
+    setImportant(gear, "min-height", h + "px");
+    setImportant(gear, "max-width", w + "px");
+    setImportant(gear, "max-height", h + "px");
+    setImportant(gear, "border-radius", style.borderRadius);
+    setImportant(gear, "padding", style.padding);
+    setImportant(gear, "font-size", style.fontSize);
+
+    var gearIcon = gear.querySelector("i");
+    var refIcon = reference.querySelector("i");
+
+    if (gearIcon && refIcon) {
+      var iconStyle = window.getComputedStyle(refIcon);
+      setImportant(gearIcon, "font-size", iconStyle.fontSize);
+      setImportant(gearIcon, "line-height", iconStyle.lineHeight);
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", syncSettingsButtonSize);
+  } else {
+    syncSettingsButtonSize();
+  }
+
+  window.addEventListener("load", syncSettingsButtonSize);
+  window.addEventListener("resize", syncSettingsButtonSize);
+  window.setInterval(syncSettingsButtonSize, 1000);
+})();
+/* === Realtime Monitor v2 topbar button size sync END === */
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -1048,6 +2146,7 @@ window.CustomRealtime = {
 
   lastUpdate: { wifiTemp: 0, wifiCounts: 0, clients: 0, vnstat: 0, mem: 0, adblock: 0 },
   memSparkHistory: [],
+  memSparkChart: null,
   elements: {},
 
   cpuHistory:       [],
@@ -1276,68 +2375,106 @@ window.CustomRealtime = {
     }
   },
 
-  drawSparkline(hoverIdx = null) {
+
+  ensureMemSparkChart() {
     const canvas = this.elements.mem_sparkline;
-    if (!canvas || !canvas.getContext) return;
-    const pts = this.memSparkHistory;
-    if (pts.length < 2) return;
-    const dpr = window.devicePixelRatio || 1;
-    const w   = canvas.offsetWidth  || 80;
-    const h   = canvas.offsetHeight || 28;
-    canvas.width  = Math.round(w * dpr);
-    canvas.height = Math.round(h * dpr);
+    if (!canvas || typeof Chart === "undefined") return null;
+
+    if (this.memSparkChart) return this.memSparkChart;
+
     const ctx = canvas.getContext("2d");
-    ctx.scale(dpr, dpr);
-    ctx.clearRect(0, 0, w, h);
+    if (!ctx) return null;
 
-    const padT = 3, padB = 3;
-    const coords = pts.map((v, i) => [
-      (i / (pts.length - 1)) * w,
-      padT + (1 - Math.min(100, Math.max(0, v)) / 100) * (h - padT - padB)
-    ]);
+    const gridColor = this._chartGridColor || "rgba(148,163,184,0.18)";
+    const tickColor = this._chartTickColor || "rgba(148,163,184,0.85)";
+    const accent = "#26c6da";
 
-    const grad = ctx.createLinearGradient(0, 0, 0, h);
-    grad.addColorStop(0, "rgba(38,198,218,0.28)");
-    grad.addColorStop(1, "rgba(38,198,218,0)");
-    ctx.beginPath();
-    ctx.moveTo(coords[0][0], h);
-    coords.forEach(([x, y]) => ctx.lineTo(x, y));
-    ctx.lineTo(coords[coords.length - 1][0], h);
-    ctx.closePath();
-    ctx.fillStyle = grad;
-    ctx.fill();
+    this.memSparkChart = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: [],
+        datasets: [{
+          label: "Memory",
+          data: [],
+          borderColor: accent,
+          backgroundColor: "rgba(38,198,218,0.18)",
+          fill: true,
+          tension: 0.28,
+          borderWidth: 1.5,
+          pointRadius: 0,
+          pointHoverRadius: 3,
+          pointHoverBorderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: false,
+        interaction: {
+          mode: "index",
+          intersect: false
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            enabled: true,
+            mode: "index",
+            intersect: false,
+            displayColors: true,
+            callbacks: {
+              title: function () {
+                return "";
+              },
+              label: function (ctx) {
+                const v = Number(ctx.parsed.y || 0);
+                return "Memory: " + v.toFixed(1) + "%";
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            display: false,
+            grid: {
+              display: false
+            }
+          },
+          y: {
+            min: 0,
+            max: 100,
+            ticks: {
+              color: tickColor,
+              callback: function (value) {
+                return value + "%";
+              },
+              maxTicksLimit: 3
+            },
+            grid: {
+              color: gridColor
+            },
+            border: {
+              display: false
+            }
+          }
+        }
+      }
+    });
 
-    ctx.beginPath();
-    coords.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y));
-    ctx.strokeStyle = "#26c6da";
-    ctx.lineWidth   = 1;
-    ctx.stroke();
+    return this.memSparkChart;
+  },
 
-    if (hoverIdx !== null && hoverIdx >= 0 && hoverIdx < coords.length) {
-      const [hx, hy] = coords[hoverIdx];
-      ctx.save();
-      ctx.beginPath();
-      ctx.moveTo(hx, 0);
-      ctx.lineTo(hx, h);
-      ctx.strokeStyle = "rgba(38,198,218,0.40)";
-      ctx.lineWidth   = 1;
-      ctx.setLineDash([3, 3]);
-      ctx.stroke();
-      ctx.restore();
-      ctx.beginPath();
-      ctx.arc(hx, hy, 3, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(255,255,255,0.25)";
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(hx, hy, 2, 0, Math.PI * 2);
-      ctx.fillStyle = "#26c6da";
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(hx, hy, 2, 0, Math.PI * 2);
-      ctx.strokeStyle = "rgba(255,255,255,0.90)";
-      ctx.lineWidth   = 1;
-      ctx.stroke();
-    }
+  drawSparkline() {
+    const pts = this.memSparkHistory;
+    if (!pts || pts.length < 2) return;
+
+    const chart = this.ensureMemSparkChart();
+    if (!chart) return;
+
+    chart.data.labels = pts.map(() => "");
+    chart.data.datasets[0].data = pts.slice();
+    chart.update("none");
   },
 
   refreshWanRates() {
