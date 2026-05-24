@@ -502,6 +502,90 @@
 }
 /* === Realtime Monitor v2 two-column dashboard layout END === */
 
+
+/* === Realtime Monitor v2 compact visual polish START === */
+.rtm-page {
+  padding-top: 14px !important;
+}
+
+.rtm-grid,
+.rtm-dashboard-layout {
+  align-items: start !important;
+}
+
+.rtm-card {
+  min-height: 0 !important;
+}
+
+.rtm-card__body {
+  padding: 12px !important;
+}
+
+.rtm-chart-box {
+  min-height: 96px !important;
+}
+
+.rtm-card--network .rtm-chart-box {
+  min-height: 120px !important;
+}
+
+.rtm-card--system .rtm-chart-box {
+  min-height: 92px !important;
+}
+
+.cpu-core-label,
+.rtm-card--system .cpu-core-label {
+  margin: 8px 0 4px !important;
+  color: var(--rtm-muted) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: .04em !important;
+}
+
+.cpu-core-canvas-wrap {
+  min-height: 74px !important;
+  max-height: 96px !important;
+  border: 1px solid color-mix(in srgb, var(--rtm-border) 55%, transparent) !important;
+  border-radius: 10px !important;
+  background: color-mix(in srgb, var(--rtm-surface-strong) 35%, transparent) !important;
+  padding: 6px !important;
+  overflow: hidden !important;
+}
+
+.cpu-core-canvas-wrap canvas {
+  max-height: 82px !important;
+}
+
+#custom_wifi_ap_list,
+#custom_lan_ports {
+  margin-top: 8px !important;
+}
+
+#custom_wifi_ap_list > *,
+#custom_lan_ports > * {
+  border: 1px solid color-mix(in srgb, var(--rtm-border) 60%, transparent) !important;
+  border-radius: 10px !important;
+  background: color-mix(in srgb, var(--rtm-surface-strong) 32%, transparent) !important;
+  padding: 8px !important;
+  color: var(--rtm-text) !important;
+}
+
+#custom_lan_port_strip,
+#custom_lan_port_dots {
+  align-items: center !important;
+}
+
+.rtm-card--usage .rtm-alert,
+#vnstat_warning {
+  margin-bottom: 10px !important;
+}
+
+#vnstat_content:empty {
+  display: none !important;
+}
+/* === Realtime Monitor v2 compact visual polish END === */
+
 </style>
 
 <script>

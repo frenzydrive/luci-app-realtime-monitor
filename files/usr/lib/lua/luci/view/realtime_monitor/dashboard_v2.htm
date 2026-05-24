@@ -438,6 +438,36 @@
 }
 
 
+/* === Realtime Monitor v2 legacy interaction compatibility START === */
+.rtm-unit.open .rtm-unit__menu,
+.rtm-unit.is-open .rtm-unit__menu,
+.wan-unit-dropdown.open .wan-unit-menu,
+.wan-unit-dropdown.is-open .wan-unit-menu {
+  display: grid !important;
+  gap: 4px !important;
+}
+
+.wan-unit-option.active,
+.rtm-unit__option.active {
+  background: color-mix(in srgb, var(--rtm-accent) 22%, transparent) !important;
+  color: var(--rtm-text) !important;
+}
+
+.mem_spark_outer {
+  position: relative !important;
+  overflow: visible !important;
+}
+
+#mem_spark_tooltip {
+  position: absolute !important;
+  z-index: 80 !important;
+  pointer-events: none !important;
+  transform: translate(-50%, calc(-100% - 10px)) !important;
+  white-space: nowrap !important;
+}
+/* === Realtime Monitor v2 legacy interaction compatibility END === */
+
+
 /* === Realtime Monitor v2 two-column dashboard layout START === */
 .rtm-dashboard-layout {
   display: grid;
@@ -471,6 +501,90 @@
   }
 }
 /* === Realtime Monitor v2 two-column dashboard layout END === */
+
+
+/* === Realtime Monitor v2 compact visual polish START === */
+.rtm-page {
+  padding-top: 14px !important;
+}
+
+.rtm-grid,
+.rtm-dashboard-layout {
+  align-items: start !important;
+}
+
+.rtm-card {
+  min-height: 0 !important;
+}
+
+.rtm-card__body {
+  padding: 12px !important;
+}
+
+.rtm-chart-box {
+  min-height: 96px !important;
+}
+
+.rtm-card--network .rtm-chart-box {
+  min-height: 120px !important;
+}
+
+.rtm-card--system .rtm-chart-box {
+  min-height: 92px !important;
+}
+
+.cpu-core-label,
+.rtm-card--system .cpu-core-label {
+  margin: 8px 0 4px !important;
+  color: var(--rtm-muted) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: .04em !important;
+}
+
+.cpu-core-canvas-wrap {
+  min-height: 74px !important;
+  max-height: 96px !important;
+  border: 1px solid color-mix(in srgb, var(--rtm-border) 55%, transparent) !important;
+  border-radius: 10px !important;
+  background: color-mix(in srgb, var(--rtm-surface-strong) 35%, transparent) !important;
+  padding: 6px !important;
+  overflow: hidden !important;
+}
+
+.cpu-core-canvas-wrap canvas {
+  max-height: 82px !important;
+}
+
+#custom_wifi_ap_list,
+#custom_lan_ports {
+  margin-top: 8px !important;
+}
+
+#custom_wifi_ap_list > *,
+#custom_lan_ports > * {
+  border: 1px solid color-mix(in srgb, var(--rtm-border) 60%, transparent) !important;
+  border-radius: 10px !important;
+  background: color-mix(in srgb, var(--rtm-surface-strong) 32%, transparent) !important;
+  padding: 8px !important;
+  color: var(--rtm-text) !important;
+}
+
+#custom_lan_port_strip,
+#custom_lan_port_dots {
+  align-items: center !important;
+}
+
+.rtm-card--usage .rtm-alert,
+#vnstat_warning {
+  margin-bottom: 10px !important;
+}
+
+#vnstat_content:empty {
+  display: none !important;
+}
+/* === Realtime Monitor v2 compact visual polish END === */
 
 </style>
 
@@ -583,14 +697,14 @@
 
         <div id="wan_down_msg"></div>
 
-        <div id="wan_unit_dropdown" class="rtm-unit">
-          <button id="wan_unit_trigger" class="rtm-button" type="button" aria-haspopup="listbox" aria-expanded="false">
+        <div id="wan_unit_dropdown" class="rtm-unit wan-unit-dropdown">
+          <button id="wan_unit_trigger" class="rtm-button wan-unit-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
             <span id="wan_unit_label">MB/s</span>
             <i class="fas fa-chevron-down"></i>
           </button>
-          <div id="wan_unit_menu" class="rtm-unit__menu" role="listbox" aria-label="WAN unit">
-            <button class="rtm-unit__option" type="button" data-unit="MBs">MB/s</button>
-            <button class="rtm-unit__option" type="button" data-unit="Mbps">Mbps</button>
+          <div id="wan_unit_menu" class="rtm-unit__menu wan-unit-menu" role="listbox" aria-label="WAN unit">
+            <button class="rtm-unit__option wan-unit-option active" type="button" data-unit="MBs">MB/s</button>
+            <button class="rtm-unit__option wan-unit-option" type="button" data-unit="Mbps">Mbps</button>
           </div>
         </div>
 
@@ -743,6 +857,48 @@
     </div>
   </main>
 </section>
+
+
+<script>
+/* === Realtime Monitor v2 tooltip position shim START === */
+(function () {
+  function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+  }
+
+  function setupMemoryTooltipShim() {
+    var canvas = document.getElementById("mem_sparkline");
+    var tooltip = document.getElementById("mem_spark_tooltip");
+    var wrap = canvas && canvas.closest(".mem_spark_outer");
+
+    if (!canvas || !tooltip || !wrap) return;
+
+    canvas.addEventListener("mousemove", function (event) {
+      var wrapRect = wrap.getBoundingClientRect();
+      var canvasRect = canvas.getBoundingClientRect();
+
+      var x = event.clientX - wrapRect.left;
+      var y = canvasRect.top - wrapRect.top + 4;
+
+      x = clamp(x, 16, wrapRect.width - 16);
+
+      tooltip.style.left = x + "px";
+      tooltip.style.top = y + "px";
+    });
+
+    canvas.addEventListener("mouseleave", function () {
+      tooltip.hidden = true;
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupMemoryTooltipShim);
+  } else {
+    setupMemoryTooltipShim();
+  }
+})();
+/* === Realtime Monitor v2 tooltip position shim END === */
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
